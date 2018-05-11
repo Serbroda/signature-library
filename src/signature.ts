@@ -56,18 +56,18 @@ class Signature {
     private mouseEvents() {
         let self = this;
         this.canvas.addEventListener("mousemove", function (event) {
-            self.handleMouse(MouseAction.MOVE, event);
+            self.handleMouseEvent(MouseAction.MOVE, event);
         }, false);
         this.canvas.addEventListener("mousedown", function (event) {
-            self.handleMouse(MouseAction.DOWN, event);
+            self.handleMouseEvent(MouseAction.DOWN, event);
         }, false);
         document.addEventListener("mouseup", function (event) {
-            self.handleMouse(MouseAction.UP, event);
+            self.handleMouseEvent(MouseAction.UP, event);
         }, false);
         
     }
 
-    private handleMouse(action: MouseAction, event: MouseEvent) {
+    private handleMouseEvent(action: MouseAction, event: MouseEvent) {
         switch(action) {
             case MouseAction.DOWN: {
                 this.isMouseDown = true;
@@ -83,7 +83,7 @@ class Signature {
             case MouseAction.MOVE: {
                 const point = this.createPoint(event);
                 if(this.isMouseDown) {
-                    this.drawPoints(this.getLastPoint(), point);
+                    this.drawPoints(this.getPreviousPoint(), point);
                 }
                 this.points.push(point);
                 break;
@@ -91,7 +91,7 @@ class Signature {
         }
     }
 
-    private getLastPoint(): IPoint {
+    private getPreviousPoint(): IPoint {
         if(this.points.length == 0) {
             return new Point(0, 0);
         } else if (this.points.length == 1) {
