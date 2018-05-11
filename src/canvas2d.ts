@@ -89,6 +89,7 @@ class Canvas2D {
         ctx.shadowColor = canvas.context.shadowColor;
         ctx.shadowBlur = canvas.context.shadowBlur;
         ctx.setLineDash(canvas.context.getLineDash());
+        ctx.font = canvas.context.font;
         return new Canvas2D(element, {context: ctx });
     }
 }

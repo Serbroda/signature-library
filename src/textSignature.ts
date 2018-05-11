@@ -21,8 +21,8 @@ class TextSignature extends SignatureCanvas {
         this.viewCanvas.setFont(fnt);
         this.dataCanvas.setFont(fnt);
         this.clear();
-        this.viewCanvas.drawText(text, {x: 10, y: this.viewCanvas.canvas.height - (this.viewCanvas.canvas.height / 4) - 10});
-        this.dataCanvas.drawText(text, {x: 10, y: this.dataCanvas.canvas.height - (this.dataCanvas.canvas.height / 4) - 10});
+        this.viewCanvas.drawText(text, {x: 10, y: this.viewCanvas.canvas.height - (this.viewCanvas.canvas.height / 4) - 5});
+        this.dataCanvas.drawText(text, {x: 10, y: this.dataCanvas.canvas.height - (this.dataCanvas.canvas.height / 4) - 5});
     }
 
     private getFont(): string {

@@ -39,22 +39,22 @@
         }
         #container
         {
-        height: 400px;
-        position: relative;
-        width: 400px;
-        border: 1px solid black;
+            position: relative;
+            width: 700px;
+            border: 1px solid black;
         }
         #viewport
         {
-        height: 100%;
-        width: 100%;
+            height: 100%;
+            width: 100%;
         }
-        #controls
-        {
-        bottom: 0;
-        left: 0;
-        position: absolute;
-        width: 100%;
+        #controls {
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
         }
     </style>
 </head>
@@ -64,25 +64,22 @@
         <h1>Signature Pad</h1>
 
         <div class="row">
-            <canvas id="signature" class="hover" style="border: 1px solid black;" width="500"></canvas>
+            <canvas id="signature" class="hover" style="border: 1px solid black;" width="700"></canvas>
             <button onclick="signPad.clear();">Clear</button>
             <button onclick="save();">save</button>
             <img id="savedImage"/>
         </div>
         
         <div class="row">
-            <canvas id="textSignature" style="border: 1px solid black;" width="500"></canvas>
+            <div id="container">
+                <canvas id="viewport" style="border: 1px solid black;" width="700"></canvas>
+                <input id="controls" type="text" style="font-size: 70px; font-family: Signature"/>
+            </div>
+
         </div>
         <div class="row">
             <input id="text" type="text"/>
         </div>
-    
-    <div id="container">
-    <canvas id="viewport">
-    </canvas>
-    <button id="controls">test
-    </button>
-    </div>
 
     </div>
     <script>
@@ -93,8 +90,8 @@
                 lineWidth: 2
             });
             textSignature = new TextSignature(
-                document.getElementById('textSignature'), {
-                    fontSize: "50px",
+                document.getElementById('viewport'), {
+                    fontSize: "70px",
                     fontFamily: "Signature"
                 })
 
