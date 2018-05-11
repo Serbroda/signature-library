@@ -34,7 +34,7 @@
             src: url("fonts/My Mom s Font.ttf");
         }
 
-        canvas:hover {
+        canvas.hover:hover {
             cursor: crosshair;
         }
         #container
@@ -64,14 +64,14 @@
         <h1>Signature Pad</h1>
 
         <div class="row">
-            <canvas id="signature" style="border: 1px solid black;"></canvas>
+            <canvas id="signature" class="hover" style="border: 1px solid black;" width="500"></canvas>
             <button onclick="signPad.clear();">Clear</button>
             <button onclick="save();">save</button>
             <img id="savedImage"/>
         </div>
         
         <div class="row">
-            <canvas id="textSignature" style="border: 1px solid black;"></canvas>
+            <canvas id="textSignature" style="border: 1px solid black;" width="500"></canvas>
         </div>
         <div class="row">
             <input id="text" type="text"/>
