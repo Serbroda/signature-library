@@ -21,6 +21,8 @@
         integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" 
         crossorigin="anonymous"/>
 
+    <script src="../dist/point.js"></script>
+    <script src="../dist/signatureCanvas.js"></script>
     <script src="../dist/signPad.js"></script>
     <script src="../dist/textSignature.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
@@ -33,6 +35,25 @@
 
         canvas:hover {
             cursor: crosshair;
+        }
+        #container
+        {
+        height: 400px;
+        position: relative;
+        width: 400px;
+        border: 1px solid black;
+        }
+        #viewport
+        {
+        height: 100%;
+        width: 100%;
+        }
+        #controls
+        {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
         }
     </style>
 </head>
@@ -53,6 +74,13 @@
             <input id="text" type="text"/>
         </div>
     
+<div id="container">
+  <canvas id="viewport">
+  </canvas>
+  <button id="controls">test
+  </button>
+</div>
+
     </div>
     <script>
         var signPad;

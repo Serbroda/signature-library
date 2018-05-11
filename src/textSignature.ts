@@ -1,24 +1,24 @@
+/// <reference path="./signatureCanvas.ts"/>
+
 interface TextSignatureOptions {
     fontSize: string;
     fontFamily: string;
 }
 
-class TextSignature {
-    canvasContext: CanvasRenderingContext2D | null = null;
-
+class TextSignature extends SignatureCanvas {
     constructor(
-        private canvas: HTMLCanvasElement, 
+        public canvas: HTMLCanvasElement, 
         private options: TextSignatureOptions = {
             fontSize: "30px",
             fontFamily: "Signature"
         }) {
+        super(canvas);
         this.loadFont(this.options.fontFamily);
-        this.canvasContext = this.canvas.getContext("2d");
     }
 
     drawText(text: string, font?: string) {
         let fnt = font || this.getFont();
-        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.clear();
         this.canvasContext.font = fnt;
         this.canvasContext.fillText(text, 10, 50);
     }
@@ -35,7 +35,7 @@ class TextSignature {
         var bod = document.getElementsByTagName("body")[0].appendChild(paragraph);
         
         setTimeout(function() {
-            paragraph.remove();
+           // paragraph.remove();
         }, 1);
     }
 }
