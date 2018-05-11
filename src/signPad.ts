@@ -90,7 +90,7 @@ class SignPad extends SignatureCanvas {
     }
 
     public save(type: string = "image/png", encoderOptions?: number): string {
-        super.clear(false);
+        /*super.clear(false);
         let last: IPoint = null;
         for(let i = 0; i < this.data.length; i++) {
             if(i == 0) {
@@ -101,7 +101,7 @@ class SignPad extends SignatureCanvas {
             }
         }
         let img = this.canvas.toDataURL(type, encoderOptions);
-        super.drawLeadingLines();
-        return img;
+        super.drawLeadingLines();*/
+        return this.dataCanvas.toDataURL(type, encoderOptions);;
     }
 }

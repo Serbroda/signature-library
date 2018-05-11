@@ -19,6 +19,8 @@ interface ILeadingLine {
 
 class SignatureCanvas {
     protected canvasContext: CanvasRenderingContext2D;
+    protected dataCanvas: HTMLCanvasElement;
+    protected dataCnavasContext: CanvasRenderingContext2D;
     protected leadingLines: ILeadingLine[] = [];
 
     constructor(
@@ -32,6 +34,12 @@ class SignatureCanvas {
 
     public init() {
         this.canvasContext = this.canvas.getContext("2d");
+
+        this.dataCanvas = document.createElement("canvas");
+        this.dataCanvas.width = this.canvas.width;
+        this.dataCanvas.height = this.canvas.height;
+        this.dataCnavasContext = this.dataCanvas.getContext("2d");
+
         this.addLeadingLine({
             start: {x: 0, y: this.canvas.height - (this.canvas.height / 4)},
             end: {x: this.canvas.width, y: this.canvas.height - (this.canvas.height / 4)},
@@ -76,7 +84,7 @@ class SignatureCanvas {
         let prevStroke = this.getCurrentContextStroke();
         for(let line of this.leadingLines) {
             this.setStrokeStyle(line.stroke);
-            this.drawLine(line.start, line.end);
+            this.drawLine(line.start, line.end, this.canvasContext);
         }
         
         this.setStrokeStyle(prevStroke);
@@ -84,12 +92,20 @@ class SignatureCanvas {
 
     public clear(redrawLines: boolean = true) {
         this.canvasContext.clearRect(0 ,0, this.canvas.width, this.canvas.height);
+        this.dataCnavasContext.clearRect(0 ,0, this.dataCanvas.width, this.dataCanvas.height)
         if(redrawLines) {
             this.drawLeadingLines();
         }
     }
 
-    public drawLine(start: IPoint, end: IPoint) {
+    public drawLine(start: IPoint, end: IPoint, ctx?: CanvasRenderingContext2D) {
+        let drawCtx = ctx || this.dataCnavasContext;
+        drawCtx.beginPath();
+        drawCtx.moveTo(start.x, start.y);
+        drawCtx.lineTo(end.x, end.y);
+        drawCtx.stroke();
+        drawCtx.closePath();
+
         this.canvasContext.beginPath();
         this.canvasContext.moveTo(start.x, start.y);
         this.canvasContext.lineTo(end.x, end.y);
@@ -97,13 +113,17 @@ class SignatureCanvas {
         this.canvasContext.closePath();
     }
 
-    public drawDot(point: IPoint) {
-        if(this.canvasContext != null) {
-            this.canvasContext.beginPath();
-            this.canvasContext.fillStyle = "black";
-            this.canvasContext.fillRect(point.x, point.y, this.canvasContext.lineWidth, this.canvasContext.lineWidth);
-            this.canvasContext.closePath();
-        }
+    public drawDot(point: IPoint, ctx?: CanvasRenderingContext2D) {
+        let drawCtx = ctx || this.dataCnavasContext;
+        drawCtx.beginPath();
+        drawCtx.fillStyle = "black";
+        drawCtx.fillRect(point.x, point.y, this.canvasContext.lineWidth, this.canvasContext.lineWidth);
+        drawCtx.closePath();
+
+        this.canvasContext.beginPath();
+        this.canvasContext.fillStyle = "black";
+        this.canvasContext.fillRect(point.x, point.y, this.canvasContext.lineWidth, this.canvasContext.lineWidth);
+        this.canvasContext.closePath();
     }
 
     protected setStrokeStyle(style: IStroke) {
