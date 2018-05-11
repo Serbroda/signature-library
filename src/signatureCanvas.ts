@@ -1,4 +1,5 @@
 /// <reference path="./point.ts"/>
+/// <reference path="./canvas2d.ts"/>
 
 interface IStroke {
     lineWidth: number;
@@ -18,9 +19,7 @@ interface ILeadingLine {
 }
 
 class SignatureCanvas {
-    protected canvasContext: CanvasRenderingContext2D;
-    protected dataCanvas: HTMLCanvasElement;
-    protected dataCnavasContext: CanvasRenderingContext2D;
+    protected canvasGroup: Canvas2DGroup;
     protected leadingLines: ILeadingLine[] = [];
 
     constructor(
@@ -33,12 +32,8 @@ class SignatureCanvas {
     }
 
     public init() {
-        this.canvasContext = this.canvas.getContext("2d");
-
-        this.dataCanvas = document.createElement("canvas");
-        this.dataCanvas.width = this.canvas.width;
-        this.dataCanvas.height = this.canvas.height;
-        this.dataCnavasContext = this.dataCanvas.getContext("2d");
+        let visibleCanvas = new Canvas2D(this.canvas);
+        this.canvasGroup = new Canvas2DGroup(visibleCanvas, visibleCanvas.copy());
 
         this.addLeadingLine({
             start: {x: 0, y: this.canvas.height - (this.canvas.height / 4)},
@@ -81,66 +76,26 @@ class SignatureCanvas {
     }
 
     protected drawLeadingLines() {
-        let prevStroke = this.getCurrentContextStroke();
+        let prevStroke = this.canvasGroup.visibleCanvas.getStroke();
         for(let line of this.leadingLines) {
-            this.setStrokeStyle(line.stroke);
-            this.drawLine(line.start, line.end, this.canvasContext);
+            this.canvasGroup.visibleCanvas.setStroke(line.stroke);
+            this.canvasGroup.drawLine(line.start, line.end, Canvas2DGroupDraw.VISIBLE);
         }
-        
-        this.setStrokeStyle(prevStroke);
+        this.canvasGroup.visibleCanvas.setStroke(prevStroke);
     }
 
     public clear(redrawLines: boolean = true) {
-        this.canvasContext.clearRect(0 ,0, this.canvas.width, this.canvas.height);
-        this.dataCnavasContext.clearRect(0 ,0, this.dataCanvas.width, this.dataCanvas.height)
+        this.canvasGroup.clear();
         if(redrawLines) {
             this.drawLeadingLines();
         }
     }
 
-    public drawLine(start: IPoint, end: IPoint, ctx?: CanvasRenderingContext2D) {
-        let drawCtx = ctx || this.dataCnavasContext;
-        drawCtx.beginPath();
-        drawCtx.moveTo(start.x, start.y);
-        drawCtx.lineTo(end.x, end.y);
-        drawCtx.stroke();
-        drawCtx.closePath();
-
-        this.canvasContext.beginPath();
-        this.canvasContext.moveTo(start.x, start.y);
-        this.canvasContext.lineTo(end.x, end.y);
-        this.canvasContext.stroke();
-        this.canvasContext.closePath();
+    public drawLine(start: IPoint, end: IPoint) {
+        this.canvasGroup.drawLine(start, end);
     }
 
-    public drawDot(point: IPoint, ctx?: CanvasRenderingContext2D) {
-        let drawCtx = ctx || this.dataCnavasContext;
-        drawCtx.beginPath();
-        drawCtx.fillStyle = "black";
-        drawCtx.fillRect(point.x, point.y, this.canvasContext.lineWidth, this.canvasContext.lineWidth);
-        drawCtx.closePath();
-
-        this.canvasContext.beginPath();
-        this.canvasContext.fillStyle = "black";
-        this.canvasContext.fillRect(point.x, point.y, this.canvasContext.lineWidth, this.canvasContext.lineWidth);
-        this.canvasContext.closePath();
-    }
-
-    protected setStrokeStyle(style: IStroke) {
-        this.canvasContext.lineWidth = style.lineWidth;
-        this.canvasContext.strokeStyle = style.strokeStyle;
-        this.canvasContext.shadowColor = style.shadowColor;
-        this.canvasContext.shadowBlur = style.shadowBlur;
-        this.canvasContext.setLineDash(style.lineDash);
-    }
-
-    protected getCurrentContextStroke(): IStroke {
-        return {
-            lineWidth: this.canvasContext.lineWidth,
-            lineDash: this.canvasContext.getLineDash(),
-            strokeStyle: this.canvasContext.strokeStyle as string,
-            shadowBlur: this.canvasContext.shadowBlur,
-            shadowColor: this.canvasContext.shadowColor,
-        }
+    public drawDot(point: IPoint) {
+        this.canvasGroup.drawDot(point);
     }
 }

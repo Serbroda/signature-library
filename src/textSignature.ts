@@ -17,10 +17,7 @@ class TextSignature extends SignatureCanvas {
     }
 
     drawText(text: string, font?: string) {
-        let fnt = font || this.getFont();
-        this.clear();
-        this.canvasContext.font = fnt;
-        this.canvasContext.fillText(text, 10, 50);
+        this.canvasGroup.drawText(text);
     }
 
     private getFont(): string {
