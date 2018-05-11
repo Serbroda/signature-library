@@ -14,7 +14,7 @@ interface SignPadOptions {
 
 class SignPad extends SignatureCanvas {
     canvasContext: CanvasRenderingContext2D | null = null;
-    points: IPoint[] = [];
+    data: IPoint[] = [];
     isMouseDown = false;
 
     constructor(
@@ -25,6 +25,7 @@ class SignPad extends SignatureCanvas {
         super(canvas);
 
         this.canvasContext = this.canvas.getContext("2d");
+        this.canvasContext.lineWidth = options.lineWidth;
         this.mouseEvents();
     }
 
@@ -39,7 +40,6 @@ class SignPad extends SignatureCanvas {
         document.addEventListener("mouseup", function (event) {
             self.handleMouseEvent(MouseAction.UP, event);
         }, false);
-        
     }
 
     private handleMouseEvent(action: MouseAction, event: MouseEvent) {
@@ -47,7 +47,7 @@ class SignPad extends SignatureCanvas {
             case MouseAction.DOWN: {
                 this.isMouseDown = true;
                 const point = this.createPoint(event);
-                this.points.push(point);
+                this.data.push(point);
                 this.drawDot(point);
                 break;
             }
@@ -58,21 +58,27 @@ class SignPad extends SignatureCanvas {
             case MouseAction.MOVE: {
                 const point = this.createPoint(event);
                 if(this.isMouseDown) {
-                    this.drawPoints(this.getPreviousPoint(), point);
+                    this.drawLine(this.getPreviousPoint(), point);
+                    this.data.push(point);
                 }
-                this.points.push(point);
                 break;
             }
         }
     }
+    
+    public clear(redrawLines: boolean = true) {
+        super.clear(redrawLines);
+        this.data = [];
+    }
 
-    private getPreviousPoint(): IPoint {
-        if(this.points.length == 0) {
+    private getPreviousPoint(data?: IPoint[]): IPoint {
+        let _data: IPoint[] = data || this.data;
+        if(this.data.length == 0) {
             return new Point(0, 0);
-        } else if (this.points.length == 1) {
-            return this.points[0];
+        } else if (this.data.length == 1) {
+            return this.data[0];
         } else {
-            return this.points[this.points.length - 1];
+            return this.data[this.data.length - 1];
         }
     }
 
@@ -83,24 +89,19 @@ class SignPad extends SignatureCanvas {
         );
     }
 
-    private drawPoints(start: IPoint, end: IPoint) {
-        if(this.canvasContext != null) {
-            this.canvasContext.beginPath();
-            this.canvasContext.moveTo(start.x, start.y);
-            this.canvasContext.lineTo(end.x, end.y);
-            this.canvasContext.lineWidth = this.options.lineWidth;
-            this.canvasContext.stroke();
-            this.canvasContext.closePath();
+    public save(type: string = "image/png", encoderOptions?: number): string {
+        super.clear(false);
+        let last: IPoint = null;
+        for(let i = 0; i < this.data.length; i++) {
+            if(i == 0) {
+                last = this.data[i];
+            } else {
+                this.drawLine(last, this.data[i]);
+                last = this.data[i];
+            }
         }
+        let img = this.canvas.toDataURL(type, encoderOptions);
+        super.drawLeadingLines();
+        return img;
     }
-
-    private drawDot(point: IPoint) {
-        if(this.canvasContext != null) {
-            this.canvasContext.beginPath();
-            this.canvasContext.fillStyle = "black";
-            this.canvasContext.fillRect(point.x, point.y, this.options.lineWidth, this.options.lineWidth);
-            this.canvasContext.closePath();
-        }
-    }
-
 }
