@@ -21,28 +21,55 @@
         integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" 
         crossorigin="anonymous"/>
 
-    <script src="../dist/signature.js"></script>
+    <script src="../dist/signPad.js"></script>
+    <script src="../dist/textSignature.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 
     <style>
+        @font-face {
+            font-family: "Signature";
+            src: url("fonts/My Mom s Font.ttf");
+        }
+
         canvas:hover {
             cursor: crosshair;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+
+        <h1>Signature Pad</h1>
+
+        <div class="row">
+            <canvas id="signature" style="border: 1px solid black;"></canvas>
+            <button onclick="signPad.clear();">Clear</button>
+        </div>
+        
+        <div class="row">
+            <canvas id="textSignature" style="border: 1px solid black;"></canvas>
+        </div>
+        <div class="row">
+            <input id="text" type="text"/>
+        </div>
     
-    <h1>Signature Pad</h1>
-
-    <canvas id="signature" style="border: 1px solid black;"></canvas>
-    <button onclick="signature.clear();">Clear</button>
-
+    </div>
     <script>
-        var signature;
+        var signPad;
+        var textSignature;
         (function() {
-            signature = new Signature(document.getElementById('signature'), {
+            signPad = new SignPad(document.getElementById('signature'), {
                 lineWidth: 2
             });
+            textSignature = new TextSignature(
+                document.getElementById('textSignature'), {
+                    fontSize: "30px",
+                    fontFamily: "Signature"
+                })
+
+            $("input#text").change(function() {
+                textSignature.drawText($(this).val());
+            })
         })();
     </script>
 </body>
