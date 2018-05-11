@@ -7,9 +7,9 @@ interface TextSignatureOptions {
 
 class TextSignature extends SignatureCanvas {
     constructor(
-        public canvas: HTMLCanvasElement, 
+        canvas: HTMLCanvasElement, 
         private options: TextSignatureOptions = {
-            fontSize: "30px",
+            fontSize: "70px",
             fontFamily: "Signature"
         }) {
         super(canvas);
@@ -17,7 +17,12 @@ class TextSignature extends SignatureCanvas {
     }
 
     drawText(text: string, font?: string) {
-        this.canvasGroup.drawText(text);
+        let fnt = font || this.getFont();
+        this.viewCanvas.setFont(fnt);
+        this.dataCanvas.setFont(fnt);
+        this.clear();
+        this.viewCanvas.drawText(text, {x: 10, y: this.viewCanvas.canvas.height / 2});
+        this.dataCanvas.drawText(text, {x: 10, y: this.viewCanvas.canvas.height / 2});
     }
 
     private getFont(): string {

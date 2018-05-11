@@ -17,7 +17,7 @@ class SignPad extends SignatureCanvas {
     isMouseDown = false;
 
     constructor(
-        public canvas: HTMLCanvasElement, 
+        canvas: HTMLCanvasElement, 
         private options: SignPadOptions = {
             lineWidth: 2
         }) {
@@ -27,10 +27,10 @@ class SignPad extends SignatureCanvas {
 
     private mouseEvents() {
         let self = this;
-        this.canvasGroup.visibleCanvas.canvas.addEventListener("mousemove", function (event) {
+        this.viewCanvas.canvas.addEventListener("mousemove", function (event) {
             self.handleMouseEvent(MouseAction.MOVE, event);
         }, false);
-        this.canvasGroup.visibleCanvas.canvas.addEventListener("mousedown", function (event) {
+        this.viewCanvas.canvas.addEventListener("mousedown", function (event) {
             self.handleMouseEvent(MouseAction.DOWN, event);
         }, false);
         document.addEventListener("mouseup", function (event) {
@@ -80,8 +80,8 @@ class SignPad extends SignatureCanvas {
 
     private createPoint(event: MouseEvent): IPoint {
         return new Point(
-            event.clientX - this.canvas.offsetLeft, 
-            event.clientY - this.canvas.offsetTop
+            event.clientX - this.baseCanvasElement.offsetLeft, 
+            event.clientY - this.baseCanvasElement.offsetTop
         );
     }
 
@@ -98,6 +98,6 @@ class SignPad extends SignatureCanvas {
         }
         let img = this.canvas.toDataURL(type, encoderOptions);
         super.drawLeadingLines();*/
-        return this.canvasGroup.dataCanvas.canvas.toDataURL(type, encoderOptions);;
+        return this.dataCanvas.canvas.toDataURL(type, encoderOptions);;
     }
 }

@@ -19,12 +19,14 @@ interface ILeadingLine {
 }
 
 class SignatureCanvas {
-    protected canvasGroup: Canvas2DGroup;
+    protected baseCanvasElement: HTMLCanvasElement;
+    protected viewCanvas: Canvas2D;
+    protected dataCanvas: Canvas2D;
+
     protected leadingLines: ILeadingLine[] = [];
 
-    constructor(
-        public canvas: HTMLCanvasElement, 
-        protected baseOptions: ISignatureCanvasOptions = { }) {
+    constructor(canvas: HTMLCanvasElement, protected baseOptions: ISignatureCanvasOptions = { }) {
+        this.baseCanvasElement = canvas;
         if(baseOptions.leadingLines) {
             this.leadingLines = baseOptions.leadingLines;
         }
@@ -32,12 +34,12 @@ class SignatureCanvas {
     }
 
     public init() {
-        let visibleCanvas = new Canvas2D(this.canvas);
-        this.canvasGroup = new Canvas2DGroup(visibleCanvas, visibleCanvas.copy());
+        this.viewCanvas = new Canvas2D(this.baseCanvasElement);
+        this.dataCanvas = this.viewCanvas.copy();
 
         this.addLeadingLine({
-            start: {x: 0, y: this.canvas.height - (this.canvas.height / 4)},
-            end: {x: this.canvas.width, y: this.canvas.height - (this.canvas.height / 4)},
+            start: {x: 0, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4)},
+            end: {x: this.baseCanvasElement.width, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4)},
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [],
@@ -47,8 +49,8 @@ class SignatureCanvas {
             }
         });
         this.addLeadingLine({
-            start: {x: 0, y: this.canvas.height / 2},
-            end: {x: this.canvas.width, y: this.canvas.height / 2},
+            start: {x: 0, y: this.baseCanvasElement.height / 2},
+            end: {x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 2},
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [5, 4],
@@ -58,8 +60,8 @@ class SignatureCanvas {
             }
         });
         this.addLeadingLine({
-            start: {x: 0, y: this.canvas.height / 4},
-            end: {x: this.canvas.width, y: this.canvas.height / 4},
+            start: {x: 0, y: this.baseCanvasElement.height / 4},
+            end: {x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 4},
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [2, 1],
@@ -76,26 +78,29 @@ class SignatureCanvas {
     }
 
     protected drawLeadingLines() {
-        let prevStroke = this.canvasGroup.visibleCanvas.getStroke();
+        let prevStroke = this.viewCanvas.getStroke();
         for(let line of this.leadingLines) {
-            this.canvasGroup.visibleCanvas.setStroke(line.stroke);
-            this.canvasGroup.drawLine(line.start, line.end, Canvas2DGroupDraw.VISIBLE);
+            this.viewCanvas.setStroke(line.stroke);
+            this.viewCanvas.drawLine(line.start, line.end);
         }
-        this.canvasGroup.visibleCanvas.setStroke(prevStroke);
+        this.viewCanvas.setStroke(prevStroke);
     }
 
     public clear(redrawLines: boolean = true) {
-        this.canvasGroup.clear();
+        this.viewCanvas.clear();
+        this.dataCanvas.clear();
         if(redrawLines) {
             this.drawLeadingLines();
         }
     }
 
     public drawLine(start: IPoint, end: IPoint) {
-        this.canvasGroup.drawLine(start, end);
+        this.viewCanvas.drawLine(start, end);
+        this.dataCanvas.drawLine(start, end);
     }
 
     public drawDot(point: IPoint) {
-        this.canvasGroup.drawDot(point);
+        this.viewCanvas.drawDot(point);
+        this.dataCanvas.drawDot(point);
     }
 }

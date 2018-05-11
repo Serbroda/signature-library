@@ -39,11 +39,10 @@ class Canvas2D {
         this.context.closePath();
     }
 
-    drawText(text: string, font?: string) {
+    drawText(text: string, point: IPoint, font?: string) {
         let fnt = font || this.getFont();
-        this.clear();
         this.setFont(fnt);
-        this.context.fillText(text, 10, 50);
+        this.context.fillText(text, point.x, point.y);
     }
 
     clear() {
@@ -91,101 +90,5 @@ class Canvas2D {
         ctx.shadowBlur = canvas.context.shadowBlur;
         ctx.setLineDash(canvas.context.getLineDash());
         return new Canvas2D(element, {context: ctx });
-    }
-}
-
-enum Canvas2DGroupDraw {
-    VISIBLE,
-    DATA,
-    BOTH
-}
-
-class Canvas2DGroup {
-    constructor(public visibleCanvas: Canvas2D, public dataCanvas: Canvas2D) {
-    }
-
-    drawLine(start: IPoint, end: IPoint, drawOn?: Canvas2DGroupDraw) {
-        if(typeof drawOn === 'undefined') {
-            this.visibleCanvas.drawLine(start, end);
-            this.dataCanvas.drawLine(start, end);
-        } else {
-            switch(drawOn) {
-                case Canvas2DGroupDraw.DATA:
-                    this.dataCanvas.drawLine(start, end);
-                    break;
-                case Canvas2DGroupDraw.VISIBLE:
-                    this.visibleCanvas.drawLine(start, end);
-                    break;
-                default:
-                    this.visibleCanvas.drawLine(start, end);
-                    this.dataCanvas.drawLine(start, end);
-                    break;
-            }
-        }
-    }
-
-    drawDot(point: IPoint, drawOn?: Canvas2DGroupDraw) {
-        if(typeof drawOn === 'undefined') {
-            this.visibleCanvas.drawDot(point);
-            this.dataCanvas.drawDot(point);
-        } else {
-            switch(drawOn) {
-                case Canvas2DGroupDraw.DATA:
-                    this.dataCanvas.drawDot(point);
-                    break;
-                case Canvas2DGroupDraw.VISIBLE:
-                    this.visibleCanvas.drawDot(point);
-                    break;
-                default:
-                    this.visibleCanvas.drawDot(point);
-                    this.dataCanvas.drawDot(point);
-                    break;
-            }
-        }
-    }
-
-    drawText(text: string, drawOn?: Canvas2DGroupDraw) {
-        if(typeof drawOn === 'undefined') {
-            this.visibleCanvas.drawText(text);
-            this.dataCanvas.drawText(text);
-        } else {
-            switch(drawOn) {
-                case Canvas2DGroupDraw.DATA:
-                    this.dataCanvas.drawText(text);
-                    break;
-                case Canvas2DGroupDraw.VISIBLE:
-                    this.visibleCanvas.drawText(text);
-                    break;
-                default:
-                    this.visibleCanvas.drawText(text);
-                    this.dataCanvas.drawText(text);
-                    break;
-            }
-        }
-    }
-
-    clear(drawOn?: Canvas2DGroupDraw) {
-         if(typeof drawOn === 'undefined') {
-            this.visibleCanvas.clear();
-            this.dataCanvas.clear();
-        } else {
-            switch(drawOn) {
-                case Canvas2DGroupDraw.DATA:
-                    this.dataCanvas.clear();
-                    break;
-                case Canvas2DGroupDraw.VISIBLE:
-                    this.visibleCanvas.clear();
-                    break;
-                default:
-                    this.visibleCanvas.clear();
-                    this.dataCanvas.clear();
-                    break;
-            }
-        }
-    }
-
-    setFont(font: string) {
-        this.visibleCanvas.setFont(font);
-        this.dataCanvas.setFont(font);
     }
 }
