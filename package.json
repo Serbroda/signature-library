@@ -4,8 +4,7 @@
   "description": "Signature Pad",
   "main": "index.js",
   "scripts": {
-    "tsc-watch": "tsc -w",
-    "build": "del dist --force && rollup --config"
+    "tsc-watch": "tsc -w"
   },
   "keywords": [
     "signature",
