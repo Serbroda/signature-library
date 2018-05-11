@@ -34,18 +34,18 @@ enum MouseAction {
     OUT
 }
 
-interface SignatureOptions {
+interface SignPadOptions {
     lineWidth: number;
 }
 
-class Signature {
+class SignPad {
     canvasContext: CanvasRenderingContext2D | null = null;
     points: IPoint[] = [];
     isMouseDown = false;
 
     constructor(
         private canvas: HTMLCanvasElement, 
-        private options: SignatureOptions = {
+        private options: SignPadOptions = {
             lineWidth: 2
         }) {
 
