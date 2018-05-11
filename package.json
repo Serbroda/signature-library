@@ -1,0 +1,20 @@
+{
+  "name": "signature-pad",
+  "version": "0.0.1",
+  "description": "Signature Pad",
+  "main": "index.js",
+  "scripts": {
+    "tsc-watch": "tsc -w",
+    "build": "del dist --force && rollup --config"
+  },
+  "keywords": [
+    "signature",
+    "pad"
+  ],
+  "author": "Danny Rottstegge",
+  "license": "ISC",
+  "devDependencies": {
+    "tsc": "^1.20150623.0",
+    "typescript": "^2.8.3"
+  }
+}
