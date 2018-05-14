@@ -79,9 +79,10 @@ class SignPad extends SignatureCanvas {
     }
 
     private createPoint(event: MouseEvent): IPoint {
+        let rect = this.viewCanvas.canvas.getBoundingClientRect();
         return new Point(
-            event.clientX - this.baseCanvasElement.offsetLeft, 
-            event.clientY - this.baseCanvasElement.offsetTop
+            event.clientX - rect.left, 
+            event.clientY - rect.top
         );
     }
 
