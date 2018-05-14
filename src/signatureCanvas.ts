@@ -1,13 +1,6 @@
 /// <reference path="./point.ts"/>
 /// <reference path="./canvas2d.ts"/>
 
-interface IStroke {
-    lineWidth: number;
-    lineDash: number[];
-    strokeStyle: string;
-    shadowColor: string;
-    shadowBlur: number;
-}
 class ISignatureCanvasOptions {
     leadingLines?: ILeadingLine[];
 }
