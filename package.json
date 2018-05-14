@@ -4,7 +4,8 @@
   "description": "Signature Pad",
   "main": "index.js",
   "scripts": {
-    "tsc-watch": "tsc -w"
+    "tsc-watch": "tsc -w",
+    "build": "tsc"
   },
   "keywords": [
     "signature",
