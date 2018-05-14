@@ -1,6 +1,7 @@
 var gulp = require('gulp'); 
 var concat = require('gulp-concat');
 var minify = require('gulp-minify');
+var watch = require('gulp-watch');
 
 gulp.task('bundle', function() {
   return gulp.src([
@@ -14,7 +15,7 @@ gulp.task('bundle', function() {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('minify', function() {
+gulp.task('minify', ['bundle'], function() {
     return gulp.src("./dist/signature.js")
         .pipe(minify({
             ext: {
@@ -24,4 +25,10 @@ gulp.task('minify', function() {
             ignoreFiles: ['.combo.js', '-min.js']
         }))
         .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('watch', function() {
+    return watch('./lib/**/*.js', function() {
+        gulp.start('minify');
+    });
 });

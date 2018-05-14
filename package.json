@@ -4,7 +4,9 @@
   "description": "Signature Pad",
   "main": "index.js",
   "scripts": {
-    "tsc-watch": "tsc -w",
+    "start": "concurrently --kill-others \"npm run watch-tsc\" \"npm run watch-gulp\"",
+    "watch-tsc": "tsc -w",
+    "watch-gulp": "gulp watch",
     "build-tsc": "tsc",
     "build-gulp": "gulp bundle && gulp minify",
     "build": "npm run build-tsc && npm run build-gulp"
@@ -16,9 +18,11 @@
   "author": "Danny Rottstegge",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^3.5.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-minify": "^2.1.0",
+    "gulp-watch": "^5.0.0",
     "tsc": "^1.20150623.0",
     "typescript": "^2.8.3"
   }
