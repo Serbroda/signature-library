@@ -102,6 +102,10 @@
         })();
 
         function save() {
+            if(!signPad.hasData()) {
+                alert('No data set');
+                return;
+            }
             var data = signPad.save();
             $('#savedImage').attr("src", data);
             //window.location.href = signPad.save();

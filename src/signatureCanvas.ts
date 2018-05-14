@@ -103,4 +103,12 @@ class SignatureCanvas {
         this.viewCanvas.drawDot(point);
         this.dataCanvas.drawDot(point);
     }
+
+    public hasData(): boolean {
+        return this.dataCanvas.hasData();
+    }
+
+    public save(type: string = "image/png", encoderOptions?: number): string {
+        return this.dataCanvas.canvas.toDataURL(type, encoderOptions);;
+    }
 }

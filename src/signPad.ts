@@ -90,19 +90,4 @@ class SignPad extends SignatureCanvas {
         );
     }
 
-    public save(type: string = "image/png", encoderOptions?: number): string {
-        /*super.clear(false);
-        let last: IPoint = null;
-        for(let i = 0; i < this.data.length; i++) {
-            if(i == 0) {
-                last = this.data[i];
-            } else {
-                this.drawLine(last, this.data[i]);
-                last = this.data[i];
-            }
-        }
-        let img = this.canvas.toDataURL(type, encoderOptions);
-        super.drawLeadingLines();*/
-        return this.dataCanvas.canvas.toDataURL(type, encoderOptions);;
-    }
 }

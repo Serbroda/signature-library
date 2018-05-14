@@ -9,7 +9,10 @@ interface IStroke {
 }
 
 class Canvas2D {
+    private _hasData: boolean = false;
+
     public context: CanvasRenderingContext2D;
+
     constructor(public canvas: HTMLCanvasElement, context?: { context: CanvasRenderingContext2D, stroke?: IStroke, font?: string }) {
         if(context) {
             this.context = context.context;
@@ -22,6 +25,7 @@ class Canvas2D {
         if(context && context.font) {
             this.setFont(context.font);
         }
+        this._hasData = false;
     }
 
     drawLine(start: IPoint, end: IPoint) {
@@ -30,6 +34,7 @@ class Canvas2D {
         this.context.lineTo(end.x, end.y);
         this.context.stroke();
         this.context.closePath();
+        this._hasData = true;
     }
 
     drawDot(point: IPoint) {
@@ -37,16 +42,19 @@ class Canvas2D {
         this.context.fillStyle = "black";
         this.context.fillRect(point.x, point.y, this.context.lineWidth, this.context.lineWidth);
         this.context.closePath();
+        this._hasData = true;
     }
 
     drawText(text: string, point: IPoint, font?: string) {
         let fnt = font || this.getFont();
         this.setFont(fnt);
         this.context.fillText(text, point.x, point.y);
+        this._hasData = true;
     }
 
     clear() {
         this.context.clearRect(0 ,0, this.canvas.width, this.canvas.height);
+        this._hasData = false;
     }
 
     setStroke(stroke: IStroke) {
@@ -77,6 +85,10 @@ class Canvas2D {
 
     copy(): Canvas2D {
         return Canvas2D.copyFrom(this);
+    }
+
+    hasData(): boolean {
+        return this._hasData;
     }
 
     static copyFrom(canvas: Canvas2D): Canvas2D {
