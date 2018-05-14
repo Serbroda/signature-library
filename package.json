@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc-watch": "tsc -w",
-    "build": "tsc"
+    "build": "tsc && gulp"
   },
   "keywords": [
     "signature",
@@ -14,6 +14,8 @@
   "author": "Danny Rottstegge",
   "license": "ISC",
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
     "tsc": "^1.20150623.0",
     "typescript": "^2.8.3"
   }
