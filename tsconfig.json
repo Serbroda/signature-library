@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es3",
     "module": "commonjs",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "declaration": true,
     "noImplicitAny": true
   },

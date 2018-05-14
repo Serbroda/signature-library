@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "tsc-watch": "tsc -w",
-    "build": "tsc && gulp"
+    "build-tsc": "tsc",
+    "build-gulp": "gulp bundle && gulp minify",
+    "build": "npm run build-tsc && npm run build-gulp"
   },
   "keywords": [
     "signature",
@@ -16,6 +18,7 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
+    "gulp-minify": "^2.1.0",
     "tsc": "^1.20150623.0",
     "typescript": "^2.8.3"
   }
