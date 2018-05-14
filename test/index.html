@@ -34,6 +34,11 @@
             src: url("fonts/My Mom s Font.ttf");
         }
 
+        input.clean {
+            border: none;
+            border-color: transparent;
+            background-color: transparent;
+        }
         canvas.hover:hover {
             cursor: crosshair;
         }
@@ -72,8 +77,8 @@
         
         <div class="row">
             <div id="container">
-                <canvas id="viewport" style="border: 1px solid black;" width="700"></canvas>
-                <input id="controls" type="text" style="font-size: 70px; font-family: Signature"/>
+                <canvas id="viewport" width="700"></canvas>
+                <input id="controls" class="clean" type="text" style="font-size: 70px; font-family: Signature"/>
             </div>
 
         </div>
