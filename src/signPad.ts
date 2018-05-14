@@ -10,6 +10,7 @@ enum MouseAction {
 
 interface SignPadOptions {
     lineWidth: number;
+    docReference?: Document;
 }
 
 class SignPad extends SignatureCanvas {
@@ -19,13 +20,16 @@ class SignPad extends SignatureCanvas {
     constructor(
         canvas: HTMLCanvasElement, 
         private options: SignPadOptions = {
-            lineWidth: 2
+            lineWidth: 2,
+            docReference: document
         }) {
         super(canvas);
+        this.options.docReference = this.options.docReference || document;
         this.mouseEvents();
     }
 
     private mouseEvents() {
+        
         let self = this;
         this.viewCanvas.canvas.addEventListener("mousemove", function (event) {
             self.handleMouseEvent(MouseAction.MOVE, event);
@@ -33,7 +37,7 @@ class SignPad extends SignatureCanvas {
         this.viewCanvas.canvas.addEventListener("mousedown", function (event) {
             self.handleMouseEvent(MouseAction.DOWN, event);
         }, false);
-        document.addEventListener("mouseup", function (event) {
+        this.options.docReference.addEventListener("mouseup", function (event) {
             self.handleMouseEvent(MouseAction.UP, event);
         }, false);
     }
