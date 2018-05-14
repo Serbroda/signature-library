@@ -1,11 +1,11 @@
 /// <reference path="./point.ts"/>
 
 interface IStroke {
-    lineWidth: number;
-    lineDash: number[];
-    strokeStyle: string;
-    shadowColor: string;
-    shadowBlur: number;
+    lineWidth?: number;
+    lineDash?: number[];
+    strokeStyle?: string;
+    shadowColor?: string;
+    shadowBlur?: number;
 }
 
 class Canvas2D {
@@ -58,11 +58,13 @@ class Canvas2D {
     }
 
     setStroke(stroke: IStroke) {
-        this.context.lineWidth = stroke.lineWidth;
-        this.context.strokeStyle = stroke.strokeStyle;
-        this.context.shadowColor = stroke.shadowColor;
-        this.context.shadowBlur = stroke.shadowBlur;
-        this.context.setLineDash(stroke.lineDash);
+        this.context.lineWidth = stroke.lineWidth || this.context.lineWidth;
+        this.context.strokeStyle = stroke.strokeStyle || this.context.strokeStyle;
+        this.context.shadowColor = stroke.shadowColor || this.context.shadowColor;
+        this.context.shadowBlur = stroke.shadowBlur || this.context.shadowBlur;
+        if(stroke.lineDash) {
+            this.context.setLineDash(stroke.lineDash);
+        }
     }
 
     getStroke(): IStroke {
