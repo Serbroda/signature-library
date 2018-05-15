@@ -3,6 +3,7 @@
 
 class ISignatureCanvasOptions {
     leadingLines?: ILeadingLine[];
+    stroke?: IStroke;
 }
 
 interface ILeadingLine {
@@ -64,6 +65,11 @@ class SignatureCanvas {
             }
         });
         this.drawLeadingLines();
+         if(this.baseOptions.stroke) {
+            console.log(this.baseOptions.stroke);
+            this.viewCanvas.setStroke(this.baseOptions.stroke);
+            this.dataCanvas.setStroke(this.baseOptions.stroke;
+        }
     }
 
     public addLeadingLine(leadingLine: ILeadingLine) {

@@ -23,7 +23,11 @@ class SignPad extends SignatureCanvas {
             lineWidth: 2,
             docReference: document
         }) {
-        super(canvas);
+        super(canvas, {
+            stroke: {
+                lineWidth: options.lineWidth
+            }
+        });
         this.options.docReference = this.options.docReference || document;
         this.mouseEvents();
     }
