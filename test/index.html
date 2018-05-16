@@ -82,6 +82,12 @@
             <input id="text" type="text"/>
         </div>
 
+        <button onclick="doPost();">Open</button>
+
+        <form action="http://localhost:60755/herbrand24/dispatch/test" method="post">
+            <input type="submit"/>
+        </form>
+
     </div>
     <script>
         var signPad;
@@ -107,9 +113,118 @@
                 return;
             }
             var data = signPad.save();
+            console.log(data);
             $('#savedImage').attr("src", data);
             //window.location.href = signPad.save();
         }
+
+        function opeinIn() {
+            if(!signPad.hasData()) {
+                alert('No data set');
+                return;
+            }
+            var data = signPad.save();
+            var uri = "http://localhost:60755/herbrand24/dispatch/deccomCombined?printDate=true&signature=" + encodeURIComponent(data)
+            window.open(
+                uri,
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }
+
+        function doPost() {
+            /*var data = {
+                declarationOfCommitmentStatus: {
+                    canBeClosed: true,
+                    show: true,
+                    dueDate: "2017-01-01", 
+                    availableCloses: 5,
+                    showCloseCount: false
+                },
+                companyName: "Danny GmbH & CO. KG",
+                taxNumber: "DE123456789",
+                addressLine0: "Dinxperloer Str. 159",
+                addressLine1: "",
+                addressLine2: "46399 Bocholt",
+                customerNumber: "4711",
+                bays: 0,
+                inspectionPits: 0,
+                liftingPlatforms: 0,
+                employees: 0,
+                chamberOfCraftsRegistered: true,
+                chamberOfCraftsNotRegistered: false,
+                chamberOfCraftsName: "Borken HWK",
+                chamberOfCraftsAs: "DDD"
+            };*/
+
+             var data = {
+                declarationOfCommitmentStatus: {
+                    canBeClosed: true,
+                    show: true,
+                    dueDate: "2017-01-01", 
+                    availableCloses: 5,
+                    showCloseCount: false
+                },
+                companyName: "Danny GmbH & CO. KG",
+                taxNumber: "DE123456789",
+                addressLine0: "Dinxperloer Str. 159",
+                addressLine1: "",
+                addressLine2: "46399 Bocholt",
+                customerNumber: "4711",
+                bays: 0,
+                inspectionPits: 0,
+                liftingPlatforms: 0,
+                employees: 0,
+                chamberOfCraftsRegistered: true,
+                chamberOfCraftsNotRegistered: false,
+                chamberOfCraftsName: "Borken HWK",
+                chamberOfCraftsAs: "DDD",
+                signature: signPad.save()
+            };
+
+            values = {}
+            eachRecursive(data);
+            post('http://localhost:58093/parts/dispatch/deccomCombined', data, "post");
+        }
+
+        function post(path, params, method) {
+            method = method || "post"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for(var key in values) {
+                if(params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                    console.log(key + "=" + params[key]);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        var characters = [ ];
+        var values = {};
+
+        function eachRecursive(obj, concatKey) {
+            for (var k in obj) {
+                var key = (typeof concatKey === 'undefined' || concatKey == '') ? k : concatKey + "." + k;
+                if (typeof obj[k] == "object" && obj[k] !== null) {
+                    eachRecursive(obj[k], key);
+                } else {
+                    values[key] = obj[k];
+                } 
+            }
+        }
+
     </script>
 </body>
 </html>

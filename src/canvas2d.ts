@@ -94,8 +94,25 @@ class Canvas2D {
     }
 
     public save(type: string = "image/png", encoderOptions?: number): string {
-        
         return this.canvas.toDataURL(type, encoderOptions);
+    }
+
+    public saveCropped(rect: IRect, type: string = "image/png", encoderOptions?: number) {
+        let img = this.context.getImageData(
+            rect.smallest.x, 
+            rect.smallest.y, 
+            rect.width, 
+            rect.height
+        );
+
+        let tmpCanvas = document.createElement("canvas");
+        tmpCanvas.width = img.width;
+        tmpCanvas.height = img.height;
+        tmpCanvas.style.border = "1px solid black";
+        let tmpContext = tmpCanvas.getContext("2d");
+        tmpContext.putImageData(img, 0, 0);
+        document.getElementsByTagName("body")[0].appendChild(tmpCanvas);
+        return tmpCanvas.toDataURL(type, encoderOptions);
     }
 
     static copyFrom(canvas: Canvas2D): Canvas2D {

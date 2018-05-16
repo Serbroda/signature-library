@@ -94,4 +94,62 @@ class SignPad extends SignatureCanvas {
         );
     }
 
+    public save(type: string = "image/png", encoderOptions?: number) {
+        return super.saveCropped(Rect.createFromPointArray(this.data), type, encoderOptions);
+    }
+
+    save2(type: string = "image/png", encoderOptions?: number) {
+        let tmpCanvas = document.createElement("canvas");
+        let tmpCtx = tmpCanvas.getContext("2d");
+        let data = super.save();
+        let img = new Image();
+        img.onload = () => {
+            tmpCtx.drawImage(img, 0, 0);
+        }
+
+        img.src = data;
+        let range = this.getRectRange();
+        var imageData = tmpCtx.getImageData(range.smallest.x, range.smallest.y, range.biggest.x, range.biggest.y);
+        var canvas1 = document.createElement("canvas");
+        canvas1.width = range.biggest.x - range.smallest.x;
+        canvas1.height = range.biggest.y - range.smallest.y;
+        var ctx1 = canvas1.getContext("2d");
+        ctx1.rect(0, 0, range.biggest.x - range.smallest.x, range.biggest.y - range.smallest.y);
+        ctx1.fillStyle = 'white';
+        ctx1.fill();
+        ctx1.putImageData(imageData, 0, 0);
+        return canvas1.toDataURL(type, encoderOptions);
+    }
+
+    private getRectRange(): {
+            smallest: IPoint, 
+            biggest: IPoint,
+            width?: number,
+            height?: number
+        } {
+            console.log(this.data)
+        let sx = 99999, sy = 99999;
+        let bx = -1, by = -1;
+        for(let point of this.data) {
+            if(sx >= point.x) {
+                sx = point.x;
+            }
+            if(sy >= point.y) {
+                sy = point.y;
+            }
+            if(bx <= point.x) {
+                bx = point.x;
+            }
+            if(by <= point.y) {
+                by = point.y;
+            }
+        }
+        return {
+            smallest: new Point(sx, sy),
+            biggest: new Point(bx, by),
+            width: bx - sx,
+            height: by - sy
+        }
+    }
+
 }

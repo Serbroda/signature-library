@@ -108,6 +108,10 @@ class SignatureCanvas {
     }
 
     public save(type: string = "image/png", encoderOptions?: number): string {
-        return this.dataCanvas.canvas.toDataURL(type, encoderOptions);;
+        return this.dataCanvas.save(type, encoderOptions);
+    }
+
+    public saveCropped(rect: IRect, type: string = "image/png", encoderOptions?: number) {
+        return this.dataCanvas.saveCropped(rect, type, encoderOptions);
     }
 }
