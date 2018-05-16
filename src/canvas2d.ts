@@ -28,7 +28,7 @@ class Canvas2D {
         this._hasData = false;
     }
 
-    drawLine(start: IPoint, end: IPoint) {
+    public drawLine(start: IPoint, end: IPoint) {
         this.context.beginPath();
         this.context.moveTo(start.x, start.y);
         this.context.lineTo(end.x, end.y);
@@ -37,7 +37,7 @@ class Canvas2D {
         this._hasData = true;
     }
 
-    drawDot(point: IPoint) {
+    public drawDot(point: IPoint) {
         this.context.beginPath();
         this.context.fillStyle = "black";
         this.context.fillRect(point.x, point.y, this.context.lineWidth, this.context.lineWidth);
@@ -45,19 +45,19 @@ class Canvas2D {
         this._hasData = true;
     }
 
-    drawText(text: string, point: IPoint, font?: string) {
+    public drawText(text: string, point: IPoint, font?: string) {
         let fnt = font || this.getFont();
         this.setFont(fnt);
         this.context.fillText(text, point.x, point.y);
         this._hasData = true;
     }
 
-    clear() {
+    public clear() {
         this.context.clearRect(0 ,0, this.canvas.width, this.canvas.height);
         this._hasData = false;
     }
 
-    setStroke(stroke: IStroke) {
+    public setStroke(stroke: IStroke) {
         this.context.lineWidth = stroke.lineWidth || this.context.lineWidth;
         this.context.strokeStyle = stroke.strokeStyle || this.context.strokeStyle;
         this.context.shadowColor = stroke.shadowColor || this.context.shadowColor;
@@ -67,7 +67,7 @@ class Canvas2D {
         }
     }
 
-    getStroke(): IStroke {
+    public getStroke(): IStroke {
         return {
             lineWidth: this.context.lineWidth,
             lineDash: this.context.getLineDash(),
@@ -77,20 +77,25 @@ class Canvas2D {
         }
     }
 
-    getFont(): string {
+    public getFont(): string {
         return this.context.font;
     }
 
-    setFont(font: string) {
+    public setFont(font: string) {
         this.context.font = font;
     }
 
-    copy(): Canvas2D {
+    public copy(): Canvas2D {
         return Canvas2D.copyFrom(this);
     }
 
-    hasData(): boolean {
+    public hasData(): boolean {
         return this._hasData;
+    }
+
+    public save(type: string = "image/png", encoderOptions?: number): string {
+        
+        return this.canvas.toDataURL(type, encoderOptions);
     }
 
     static copyFrom(canvas: Canvas2D): Canvas2D {
