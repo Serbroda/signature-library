@@ -68,7 +68,7 @@ class SignatureCanvas {
          if(this.baseOptions.stroke) {
             console.log(this.baseOptions.stroke);
             this.viewCanvas.setStroke(this.baseOptions.stroke);
-            this.dataCanvas.setStroke(this.baseOptions.stroke;
+            this.dataCanvas.setStroke(this.baseOptions.stroke);
         }
     }
 
