@@ -29,12 +29,12 @@ class TextSignature extends SignatureCanvas {
         }
         let textWidth = this.dataCanvas.context.measureText(text).width;
         if(textWidth > this.viewCanvas.canvas.width) {
-            this.dataCanvas.canvas.width = this.dataCanvas.context.measureText(text).width;
+            this.dataCanvas.canvas.width = this.dataCanvas.context.measureText(text).width + 10;
             this.viewCanvas.setFont(fnt);
             this.dataCanvas.setFont(fnt);
         } else {
             if(this.dataCanvas.canvas.width < this.viewCanvas.canvas.width) {
-                this.dataCanvas.canvas.width = this.viewCanvas.canvas.width;
+                this.dataCanvas.canvas.width = this.viewCanvas.canvas.width + 10;
                 this.viewCanvas.setFont(fnt);
                 this.dataCanvas.setFont(fnt);
             }
