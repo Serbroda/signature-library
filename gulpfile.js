@@ -12,11 +12,11 @@ gulp.task('bundle', function() {
         "./lib/textSignature.js"
     ])
     .pipe(concat('signature.js'))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./dist/js/'));
 });
 
 gulp.task('minify', ['bundle'], function() {
-    return gulp.src("./dist/signature.js")
+    return gulp.src("./dist/js/signature.js")
         .pipe(minify({
             ext: {
                 min:'.min.js'
@@ -24,7 +24,7 @@ gulp.task('minify', ['bundle'], function() {
             exclude: ['tasks'],
             ignoreFiles: ['.combo.js', '-min.js']
         }))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./dist/js'));
 });
 
 gulp.task('watch', function() {
