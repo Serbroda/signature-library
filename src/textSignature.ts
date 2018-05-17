@@ -3,6 +3,7 @@
 interface TextSignatureOptions {
     fontSize: string;
     fontFamily: string;
+    docReference?: Document;
 }
 
 class TextSignature extends SignatureCanvas {
@@ -10,9 +11,11 @@ class TextSignature extends SignatureCanvas {
         canvas: HTMLCanvasElement, 
         private options: TextSignatureOptions = {
             fontSize: "70px",
-            fontFamily: "Signature"
+            fontFamily: "Signature",
+            docReference: document
         }) {
         super(canvas);
+        this.options.docReference = this.options.docReference || document;
         this.loadFont(this.options.fontFamily);
     }
 
@@ -29,6 +32,10 @@ class TextSignature extends SignatureCanvas {
 
     private getFont(): string {
         return this.options.fontSize + " " + this.options.fontFamily;
+    }
+
+    public setFont(font: string) {
+        super.setFont(font);
     }
 
     private loadFont(name: string) {

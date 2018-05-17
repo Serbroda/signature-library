@@ -8,6 +8,12 @@ interface IStroke {
     shadowBlur?: number;
 }
 
+interface ICanvas2DSaveOptions {
+    type: 'base64' | 'bytes' | 'imageData';
+    options?: any;
+    cropTo?: IRect;
+}
+
 class Canvas2D {
     private _hasData: boolean = false;
 
@@ -52,6 +58,11 @@ class Canvas2D {
         this._hasData = true;
     }
 
+    public drawImage(image: any, point?: IPoint) {
+        let pt: IPoint = point || {x: 0, y: 0};
+        this.context.putImageData(image, pt.x, pt.y);
+    }
+
     public clear() {
         this.context.clearRect(0 ,0, this.canvas.width, this.canvas.height);
         this._hasData = false;
@@ -93,8 +104,35 @@ class Canvas2D {
         return this._hasData;
     }
 
-    public save(type: string = "image/png", encoderOptions?: number): string {
+    public save(options?: ICanvas2DSaveOptions): any {
+        let opt = options || {type: 'base64'};
+        switch(opt.type) {
+            case 'imageData':
+                return this.saveImageData();
+            case 'bytes':
+                return this.saveArrayBuffer();
+            default:
+                return this.saveBase64();
+        }
+    }
+
+    public saveBase64(type: string = "image/png", encoderOptions?: number) {
         return this.canvas.toDataURL(type, encoderOptions);
+    }
+
+    public saveArrayBuffer() {
+        let base64 = this.save();
+        let binary_string =  window.atob(base64);
+        let len = binary_string.length;
+        let bytes = new Uint8Array( len );
+        for (let i = 0; i < len; i++)        {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    public saveImageData() {
+        return this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
     }
 
     public saveCropped(rect: IRect, type: string = "image/png", encoderOptions?: number) {

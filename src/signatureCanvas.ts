@@ -66,7 +66,6 @@ class SignatureCanvas {
         });
         this.drawLeadingLines();
          if(this.baseOptions.stroke) {
-            console.log(this.baseOptions.stroke);
             this.viewCanvas.setStroke(this.baseOptions.stroke);
             this.dataCanvas.setStroke(this.baseOptions.stroke);
         }
@@ -103,12 +102,17 @@ class SignatureCanvas {
         this.dataCanvas.drawDot(point);
     }
 
+    public setFont(font: string) {
+        this.viewCanvas.setFont(font);
+        this.dataCanvas.setFont(font);
+    }
+
     public hasData(): boolean {
         return this.dataCanvas.hasData();
     }
 
-    public save(type: string = "image/png", encoderOptions?: number): string {
-        return this.dataCanvas.save(type, encoderOptions);
+    public save(): string {
+        return this.dataCanvas.save();
     }
 
     public saveCropped(rect: IRect, type: string = "image/png", encoderOptions?: number) {
