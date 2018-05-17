@@ -16,12 +16,14 @@ class TextSignature extends SignatureCanvas {
         this.loadFont(this.options.fontFamily);
     }
 
-    drawText(text: string, font?: string) {
+    drawText(text: string, dataOnly?: boolean, font?: string) {
         let fnt = font || this.getFont();
         this.viewCanvas.setFont(fnt);
         this.dataCanvas.setFont(fnt);
         this.clear();
-        this.viewCanvas.drawText(text, {x: 10, y: this.viewCanvas.canvas.height - (this.viewCanvas.canvas.height / 4) - 5});
+        if(typeof dataOnly == 'undefined' || !dataOnly) {
+            this.viewCanvas.drawText(text, {x: 10, y: this.viewCanvas.canvas.height - (this.viewCanvas.canvas.height / 4) - 5});
+        }
         this.dataCanvas.drawText(text, {x: 10, y: this.dataCanvas.canvas.height - (this.dataCanvas.canvas.height / 4) - 5});
     }
 

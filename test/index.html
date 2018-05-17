@@ -76,7 +76,7 @@
                 <canvas id="viewport" width="700"></canvas>
                 <input id="controls" class="clean" type="text" style="font-size: 70px; font-family: Signature"/>
             </div>
-
+             <button onclick="saveText();">save text</button>
         </div>
         <div class="row">
             <input id="text" type="text"/>
@@ -101,7 +101,6 @@
                     fontSize: "70px",
                     fontFamily: "Signature"
                 })
-
             $("input#text").change(function() {
                 textSignature.drawText($(this).val());
             })
@@ -113,6 +112,14 @@
                 return;
             }
             var data = signPad.save();
+            console.log(data);
+            $('#savedImage').attr("src", data);
+            //window.location.href = signPad.save();
+        }
+
+        function saveText() {
+            textSignature.drawText(document.getElementById("controls").value, true);
+            var data = textSignature.save();
             console.log(data);
             $('#savedImage').attr("src", data);
             //window.location.href = signPad.save();
