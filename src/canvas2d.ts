@@ -63,6 +63,20 @@ class Canvas2D {
         this.context.putImageData(image, pt.x, pt.y);
     }
 
+    public uploadImage(fileEvent: any) {
+        var reader = new FileReader();
+        reader.onload = (e: any) => {
+            let img = new Image();
+            img.onload = () => {
+                this.canvas.width = img.width;
+                this.canvas.height = img.height;
+                this.context.drawImage(img, 0, 0);
+            }
+            img.src = e.target.result;
+        }
+        reader.readAsDataURL(fileEvent.target.files[0]);
+    }
+
     public clear() {
         this.context.clearRect(0 ,0, this.canvas.width, this.canvas.height);
         this._hasData = false;
