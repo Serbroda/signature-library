@@ -60,7 +60,11 @@ class TextSignature extends SignatureCanvas {
         var bod = document.getElementsByTagName("body")[0].appendChild(paragraph);
         
         setTimeout(function() {
-           // paragraph.remove();
+           if(typeof paragraph.remove !== 'undefined') {
+               paragraph.remove();
+           } else {
+               paragraph.style.display = "none";
+           }
         }, 1);
     }
 }
