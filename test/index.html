@@ -45,12 +45,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
 
         <h1>Signature Pad</h1>
 
         <div class="row">
-            <canvas id="signature" class="hover" style="border: 1px solid black;" width="700"></canvas>
+            <canvas id="signature" class="hover signature-fullwidth signature-fullwidth-responsive" style="border: 1px solid black;"></canvas>
             <button onclick="signPad.clear();">Clear</button>
             <button onclick="save();">save</button>
             <img id="savedImage"/>
@@ -79,10 +79,13 @@
                     border-color: transparent !important;
                     background-color: transparent !important;
                 }
+                .signature-fullwidth {
+
+                }
             </style>
 
             <div class="clear signature-textinput__container">
-                <canvas id="textSignature" class="clear signature-textinput__canvas " width="700"></canvas>
+                <canvas id="textSignature" class="clear signature-textinput__canvas signature-fullwidth" width="700"></canvas>
                 <input id="textSignature-input" class="signature-textinput__textinput clear clean" type="text" style="font-size: 70px; font-family: Signature"/>
             </div>
 

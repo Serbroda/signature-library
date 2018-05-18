@@ -31,6 +31,17 @@ class Canvas2D {
         if(context && context.font) {
             this.setFont(context.font);
         }
+        if(canvas.className.indexOf('signature-fullwidth') !== -1) {
+            canvas.width = canvas.parentElement.clientWidth;
+        }
+        if(canvas.className.indexOf('signature-fullwidth-responsive') !== -1) {
+            let self = this;
+            window.addEventListener('resize', () => {
+                let image = self.saveImageData();
+                self.canvas.width = canvas.parentElement.clientWidth;
+                self.context.putImageData(image, 0, 0);
+            });
+        }
         this._hasData = false;
     }
 
