@@ -27,38 +27,38 @@ Usage
 
     <!-- typed text to signature -->
     <div>
-            <style>
-                .signature-textinput__container {
-                    position: relative !important;
-                    width: 100% !important;
-                }
-                .signature-textinput__textinput {
-                    bottom: 0 !important;
-                    left: 0 !important;
-                    position: absolute !important;
-                    width: 100% !important;
-                    height: 100% !important;
-                    background-color: transparent !important;
-                }
-                .signature-textinput__canvas {
-                    height: 100% !important;
-                    width: 100% !important;
-                }
-                input.clean {
-                    border: none !important;
-                    border-color: transparent !important;
-                    background-color: transparent !important;
-                }
-                .signature-fullwidth {
+        <style>
+            .signature-textinput__container {
+                position: relative !important;
+                width: 100% !important;
+            }
+            .signature-textinput__stextinput {
+                bottom: 0 !important;
+                left: 0 !important;
+                position: absolute !important;
+                width: 100% !important;
+                height: 100% !important;
+                background-color: transparent !important;
+            }
+            .signature-textinput__canvas {
+                height: 100% !important;
+                width: 100% !important;
+            }
+            input.clean {
+                border: none !important;
+                border-color: transparent !important;
+                background-color: transparent !important;
+            }
+            .signature-fullwidth {
 
-                }
-            </style>
+            }
+        </style>
 
-            <div class="clear signature-textinput__container">
-                <canvas id="textSignature" class="clear signature-textinput__canvas signature-fullwidth signature-fullwidth-responsive" width="700"></canvas>
-                <input id="textSignature-input" class="signature-textinput__textinput clear clean" type="text" style="font-size: 70px; font-family: Signature"/>
-            </div>
+        <div class="clear signature-textinput__container">
+            <canvas id="textSignature" class="clear signature-textinput__canvas signature-fullwidth signature-fullwidth-responsive" width="700"></canvas>
+            <input id="textSignature-input" class="signature-textinput__textinput clear clean" type="text" style="font-size: 70px; font-family: Signature"/>
         </div>
+    </div>
 
     <script >
         var signPad;
