@@ -1,7 +1,7 @@
 Signature Library
 =================================
 
-A signature component writte in javascript.
+A signature component written in typescript.
 
 Installation
 ------
