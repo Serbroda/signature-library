@@ -62,6 +62,7 @@ Usage
 
     <script >
         var signPad;
+        var textSignature;
         (function() {
             // signa pad
             signPad = new SignPad(document.getElementById('signature'), {
