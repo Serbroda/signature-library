@@ -171,10 +171,8 @@ class Canvas2D {
         let tmpCanvas = document.createElement("canvas");
         tmpCanvas.width = img.width;
         tmpCanvas.height = img.height;
-        tmpCanvas.style.border = "1px solid black";
         let tmpContext = tmpCanvas.getContext("2d");
         tmpContext.putImageData(img, 0, 0);
-        document.getElementsByTagName("body")[0].appendChild(tmpCanvas);
         return tmpCanvas.toDataURL(type, encoderOptions);
     }
 
