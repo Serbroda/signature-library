@@ -3,6 +3,8 @@ Signature Library
 
 A signature component written in typescript.
 
+Demo: https://serbroda.github.io/signature-library/
+
 Installation
 ------
 
