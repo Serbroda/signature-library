@@ -21,7 +21,7 @@
         integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" 
         crossorigin="anonymous"/>
 
-    <script src="../dist/js/signature.min.js"></script>
+    <script src="./js/signature.js"></script>
 
     <style>
         input.clean {
@@ -32,22 +32,32 @@
         canvas.hover:hover {
             cursor: crosshair;
         }
+        canvas {
+            border: 1px solid lightgray;
+        }
+        .__image-result {
+            min-width: 100px;
+            min-height: 200px;
+            border: 1px solid lightgray;
+        }
         
     </style>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container">
 
-        <h1>Signature Pad</h1>
+        <h1>Signature Library</h1>
 
-        <div class="row">
-            <canvas id="signature" class="hover signature-fullwidth signature-fullwidth-responsive" style="border: 1px solid black;"></canvas>
-            <button onclick="signPad.clear();">Clear</button>
-            <button onclick="save();">save</button>
-            <img id="savedImage"/>
+        <div class="form-group">
+            <label>Signature Pad</label>
+            <canvas id="signature" class="hover signature-fullwidth signature-fullwidth-responsive"></canvas>
+            <button onclick="signPad.clear();" class="btn btn-primary">Clear drawings</button>
+            <button onclick="save();" class="btn btn-primary">Save</button>
+            
         </div>
         
-        <div class="row">
+        <div class="form-group">
+            <label>Text to signature</label>
             <style>
                 .signature-textinput__container {
                     position: relative !important;
@@ -74,13 +84,22 @@
                 }
             </style>
 
-            <div class="clear signature-textinput__container">
-                <canvas id="textSignature" class="clear signature-textinput__canvas" width="700"></canvas>
-                <input id="textSignature-input" class="signature-textinput__textinput clear clean" type="text" style="font-size: 70px; font-family: Signature"/>
+            <div class="signature-textinput__container clear">
+                <canvas id="textSignature" class="clear signature-textinput__canvas signature-fullwidth signature-fullwidth-responsive"></canvas>
+                <input id="textSignature-input" class="signature-textinput__textinput clear clean" type="text" style="font-size: 70px; font-family: Segoe Script"/>
             </div>
 
-             <button onclick="saveText();">save text</button>
+             <button onclick="saveText();" class="btn btn-primary">Save</button>
         </div>
+
+        <hr/>
+
+        <div class="form-group">
+            <label>Saved image</label>
+            <br/>
+            <img id="savedImage"/>
+        </div>
+
 
     </div>
     <script>
@@ -95,9 +114,6 @@
                     fontSize: '60px',
     		        fontFamily: 'Segoe Script',
                 })
-            $("input#text").change(function() {
-                textSignature.drawText($(this).val());
-            })
         })();
 
         function save() {
@@ -106,14 +122,12 @@
                 return;
             }
             var data = signPad.save();
-            console.log(data);
             $('#savedImage').attr("src", data);
         }
 
         function saveText() {
             textSignature.drawText(document.getElementById("textSignature-input").value, true);
             var data = textSignature.save();
-            console.log(data);
             $('#savedImage').attr("src", data);
         }
     </script>
