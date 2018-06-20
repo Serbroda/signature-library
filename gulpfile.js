@@ -35,6 +35,8 @@ gulp.task('watch', function() {
 });
 
 gulp.task('copy-docs', function() {
-    return gulp.src('./dist/**')
-        .pipe(copy('./docs'));
+    return gulp.src('./dist/js/signature.js')
+        .pipe(copy('./docs/js', {
+            prefix: 2
+        }));
 })
