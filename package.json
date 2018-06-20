@@ -10,7 +10,8 @@
     "watch": "concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:gulp\"",
     "build:tsc": "tsc",
     "build:gulp": "gulp bundle && gulp minify",
-    "build": "npm run build:tsc && npm run build:gulp"
+    "build:docs": "gulp copy-docs",
+    "build": "npm run build:tsc && npm run build:gulp && npm run build:docs"
   },
   "keywords": [
     "signature",
