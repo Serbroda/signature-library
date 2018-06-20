@@ -4,12 +4,13 @@
   "description": "Signature Pad",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others \"npm run watch-tsc\" \"npm run watch-gulp\"",
-    "watch-tsc": "tsc -w",
-    "watch-gulp": "gulp watch",
-    "build-tsc": "tsc",
-    "build-gulp": "gulp bundle && gulp minify",
-    "build": "npm run build-tsc && npm run build-gulp"
+    "start": "concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:gulp\"",
+    "watch:tsc": "tsc -w",
+    "watch:gulp": "gulp watch",
+    "watch": "npm run start",
+    "build:tsc": "tsc",
+    "build:gulp": "gulp bundle && gulp minify",
+    "build": "npm run build:tsc && npm run build:gulp"
   },
   "keywords": [
     "signature",
