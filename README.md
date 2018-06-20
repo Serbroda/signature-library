@@ -86,3 +86,13 @@ Usage
     </script>
 </body>
 ```
+
+## v1.0 TODO
+
+* [x] Signpad component
+* [x] Text to signature component
+* [x] Crop image to real size when saving
+* [ ] Smoother drawings
+* [ ] More options
+* [ ] JQuery implementation
+* [ ] Webjar
