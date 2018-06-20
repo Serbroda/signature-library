@@ -5,6 +5,8 @@ A signature component written in typescript.
 
 Demo: https://serbroda.github.io/signature-library/
 
+![Signature Library](docs/images/demo.png)
+
 Installation
 ------
 
