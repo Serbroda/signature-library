@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var minify = require('gulp-minify');
 var watch = require('gulp-watch');
+var copy = require('gulp-copy');
 
 gulp.task('bundle', function() {
   return gulp.src([
@@ -32,3 +33,8 @@ gulp.task('watch', function() {
         gulp.start('minify');
     });
 });
+
+gulp.task('copy-docs', function() {
+    return gulp.src('./dist/**')
+        .pipe(copy('./docs'));
+})
