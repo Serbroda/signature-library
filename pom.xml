@@ -18,9 +18,9 @@
                 <configuration>
                     <resources>
                         <resource>
-                            <directory>src/main/resources</directory>
+                            <directory>dist</directory>
                             <includes>
-                                <include>**/dist/*</include>
+                                <include>**/*</include>
                             </includes>
                         </resource>
                     </resources>
