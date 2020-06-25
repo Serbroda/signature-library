@@ -1,12 +1,7 @@
 var { series, src, start, dest } = require("gulp");
-var concat = require("gulp-concat");
 var minify = require("gulp-minify");
 var watch = require("gulp-watch");
 var copy = require("gulp-copy");
-
-function bundle() {
-    return src(["lib/**.js"]).pipe(concat("signature.js")).pipe(dest("dist/js/"));
-}
 
 function minifyJs() {
     return src("dist/js/signature.js")
@@ -27,7 +22,7 @@ function watch() {
 }
 
 function copyDocs() {
-    return src("./dist/js/signature.js").pipe(
+    return src("./dist/js/signature.min.js").pipe(
         copy("./docs/js", {
             prefix: 2,
         })
@@ -35,8 +30,7 @@ function copyDocs() {
 }
 
 exports.watch = watch;
-exports.bundle = bundle;
 exports.minify = minifyJs;
-exports.build = series(bundle, minifyJs);
+exports.build = minifyJs;
 exports.copyDocs = copyDocs;
-exports.default = series(bundle, minifyJs, copyDocs);
+exports.default = series(minifyJs, copyDocs);

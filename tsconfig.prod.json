@@ -3,8 +3,9 @@
     "target": "es3",
     "module": "System",
     "declaration": true,
+    "declarationMap": true,
     "noImplicitAny": true,
-    "outFile": "./lib/bundle.ts"
+    "outFile": "./dist/js/signature.js"
   },
   "include": [
     "src/**/*"
