@@ -1,42 +1,42 @@
-var gulp = require('gulp'); 
-var concat = require('gulp-concat');
-var minify = require('gulp-minify');
-var watch = require('gulp-watch');
-var copy = require('gulp-copy');
+var { series, src, start, dest } = require("gulp");
+var concat = require("gulp-concat");
+var minify = require("gulp-minify");
+var watch = require("gulp-watch");
+var copy = require("gulp-copy");
 
-gulp.task('bundle', function() {
-  return gulp.src([
-        "./lib/point.js", 
-        "./lib/canvas2d.js", 
-        "./lib/signatureCanvas.js", 
-        "./lib/signPad.js", 
-        "./lib/textSignature.js"
-    ])
-    .pipe(concat('signature.js'))
-    .pipe(gulp.dest('./dist/js/'));
-});
+function bundle() {
+    return src(["lib/**.js"]).pipe(concat("signature.js")).pipe(dest("dist/js/"));
+}
 
-gulp.task('minify', ['bundle'], function() {
-    return gulp.src("./dist/js/signature.js")
-        .pipe(minify({
-            ext: {
-                min:'.min.js'
-            },
-            exclude: ['tasks'],
-            ignoreFiles: ['.combo.js', '-min.js']
-        }))
-        .pipe(gulp.dest('./dist/js'));
-});
+function minifyJs() {
+    return src("dist/js/signature.js")
+        .pipe(
+            minify({
+                ext: {
+                    min: ".min.js",
+                },
+            })
+        )
+        .pipe(dest("dist/js/"));
+}
 
-gulp.task('watch', function() {
-    return watch('./lib/**/*.js', function() {
-        gulp.start('minify');
+function watch() {
+    return watch("./lib/**/*.js", function () {
+        start("minify");
     });
-});
+}
 
-gulp.task('copy-docs', function() {
-    return gulp.src('./dist/js/signature.js')
-        .pipe(copy('./docs/js', {
-            prefix: 2
-        }));
-})
+function copyDocs() {
+    return src("./dist/js/signature.js").pipe(
+        copy("./docs/js", {
+            prefix: 2,
+        })
+    );
+}
+
+exports.watch = watch;
+exports.bundle = bundle;
+exports.minify = minifyJs;
+exports.build = series(bundle, minifyJs);
+exports.copyDocs = copyDocs;
+exports.default = series(bundle, minifyJs, copyDocs);

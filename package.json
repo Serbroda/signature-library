@@ -9,8 +9,8 @@
     "watch:gulp": "gulp watch",
     "watch": "concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:gulp\"",
     "build:tsc": "tsc",
-    "build:gulp": "gulp bundle && gulp minify",
-    "build:docs": "gulp copy-docs",
+    "build:gulp": "gulp build",
+    "build:docs": "gulp copyDocs",
     "build": "npm run build:tsc && npm run build:gulp && npm run build:docs"
   },
   "keywords": [
@@ -20,13 +20,12 @@
   "author": "Danny Rottstegge",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^3.5.1",
-    "gulp": "^3.9.1",
+    "concurrently": "^5.2.0",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
-    "gulp-copy": "^1.1.0",
-    "gulp-minify": "^2.1.0",
-    "gulp-watch": "^5.0.0",
-    "tsc": "^1.20150623.0",
-    "typescript": "^2.8.3"
+    "gulp-copy": "^4.0.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-watch": "^5.0.1",
+    "typescript": "^3.9.5"
   }
 }
