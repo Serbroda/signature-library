@@ -11,7 +11,7 @@
     "build:tsc": "tsc",
     "build:gulp": "gulp build",
     "build:docs": "gulp copyDocs",
-    "build": "npm run build:tsc && npm run build:gulp && npm run build:docs"
+    "build": "npm run build:tsc && gulp"
   },
   "keywords": [
     "signature",

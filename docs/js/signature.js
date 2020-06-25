@@ -1,53 +1,3 @@
-var Point = /** @class */ (function () {
-    function Point(x, y, time) {
-        this.x = x;
-        this.y = y;
-        this.time = time || Date.now();
-    }
-    Point.prototype.distanceTo = function (start) {
-        return Math.sqrt(Math.pow(this.x - start.x, 2)) + Math.pow(this.y - start.y, 2);
-    };
-    Point.prototype.velocityFrom = function (start) {
-        if (this.time === start.time) {
-            return 0;
-        }
-        return this.distanceTo(start) / (this.time - start.time);
-    };
-    Point.prototype.equalTo = function (other) {
-        return this.x === other.x && this.y === other.y && this.time === other.time;
-    };
-    return Point;
-}());
-var Rect = /** @class */ (function () {
-    function Rect(smallest, largest) {
-        this.smallest = smallest;
-        this.largest = largest;
-        this.width = largest.x - smallest.x;
-        this.height = largest.y - smallest.y;
-    }
-    Rect.createFromPointArray = function (points) {
-        var sx = 99999, sy = 99999;
-        var bx = -1, by = -1;
-        for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
-            var point = points_1[_i];
-            if (sx >= point.x) {
-                sx = point.x;
-            }
-            if (sy >= point.y) {
-                sy = point.y;
-            }
-            if (bx <= point.x) {
-                bx = point.x;
-            }
-            if (by <= point.y) {
-                by = point.y;
-            }
-        }
-        return new Rect({ x: sx, y: sy }, { x: bx, y: by });
-    };
-    return Rect;
-}());
-
 /// <reference path="./point.ts"/>
 var Canvas2D = /** @class */ (function () {
     function Canvas2D(canvas, context) {
@@ -205,117 +155,65 @@ var Canvas2D = /** @class */ (function () {
     return Canvas2D;
 }());
 
-/// <reference path="./point.ts"/>
-/// <reference path="./canvas2d.ts"/>
-var ISignatureCanvasOptions = /** @class */ (function () {
-    function ISignatureCanvasOptions() {
+var Point = /** @class */ (function () {
+    function Point(x, y, time) {
+        this.x = x;
+        this.y = y;
+        this.time = time || Date.now();
     }
-    return ISignatureCanvasOptions;
+    Point.prototype.distanceTo = function (start) {
+        return Math.sqrt(Math.pow(this.x - start.x, 2)) + Math.pow(this.y - start.y, 2);
+    };
+    Point.prototype.velocityFrom = function (start) {
+        if (this.time === start.time) {
+            return 0;
+        }
+        return this.distanceTo(start) / (this.time - start.time);
+    };
+    Point.prototype.equalTo = function (other) {
+        return this.x === other.x && this.y === other.y && this.time === other.time;
+    };
+    return Point;
 }());
-var SignatureCanvas = /** @class */ (function () {
-    function SignatureCanvas(canvas, baseOptions) {
-        if (baseOptions === void 0) { baseOptions = {}; }
-        this.baseOptions = baseOptions;
-        this.leadingLines = [];
-        this.baseCanvasElement = canvas;
-        if (baseOptions.leadingLines) {
-            this.leadingLines = baseOptions.leadingLines;
-        }
-        this.init();
+var Rect = /** @class */ (function () {
+    function Rect(smallest, largest) {
+        this.smallest = smallest;
+        this.largest = largest;
+        this.width = largest.x - smallest.x;
+        this.height = largest.y - smallest.y;
     }
-    SignatureCanvas.prototype.init = function () {
-        this.viewCanvas = new Canvas2D(this.baseCanvasElement);
-        this.dataCanvas = this.viewCanvas.copy();
-        this.addLeadingLine({
-            start: { x: 0, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4) },
-            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4) },
-            stroke: {
-                lineWidth: 1.5,
-                lineDash: [],
-                strokeStyle: '#3498db',
-                shadowBlur: 0,
-                shadowColor: '#3498db'
+    Rect.createFromPointArray = function (points) {
+        var sx = 99999, sy = 99999;
+        var bx = -1, by = -1;
+        for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
+            var point = points_1[_i];
+            if (sx >= point.x) {
+                sx = point.x;
             }
-        });
-        this.addLeadingLine({
-            start: { x: 0, y: this.baseCanvasElement.height / 2 },
-            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 2 },
-            stroke: {
-                lineWidth: 1.5,
-                lineDash: [5, 4],
-                strokeStyle: '#e8e8e8',
-                shadowBlur: 0,
-                shadowColor: '#e8e8e8'
+            if (sy >= point.y) {
+                sy = point.y;
             }
-        });
-        this.addLeadingLine({
-            start: { x: 0, y: this.baseCanvasElement.height / 4 },
-            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 4 },
-            stroke: {
-                lineWidth: 1.5,
-                lineDash: [2, 1],
-                strokeStyle: '#e8e8e8',
-                shadowBlur: 0,
-                shadowColor: '#e8e8e8'
+            if (bx <= point.x) {
+                bx = point.x;
             }
-        });
-        this.drawLeadingLines();
-        if (this.baseOptions.stroke) {
-            this.viewCanvas.setStroke(this.baseOptions.stroke);
-            this.dataCanvas.setStroke(this.baseOptions.stroke);
+            if (by <= point.y) {
+                by = point.y;
+            }
         }
+        return new Rect({ x: sx, y: sy }, { x: bx, y: by });
     };
-    SignatureCanvas.prototype.addLeadingLine = function (leadingLine) {
-        this.leadingLines.push(leadingLine);
-    };
-    SignatureCanvas.prototype.drawLeadingLines = function () {
-        var prevStroke = this.viewCanvas.getStroke();
-        for (var _i = 0, _a = this.leadingLines; _i < _a.length; _i++) {
-            var line = _a[_i];
-            this.viewCanvas.setStroke(line.stroke);
-            this.viewCanvas.drawLine(line.start, line.end);
-        }
-        this.viewCanvas.setStroke(prevStroke);
-    };
-    SignatureCanvas.prototype.clear = function (redrawLines) {
-        if (redrawLines === void 0) { redrawLines = true; }
-        this.viewCanvas.clear();
-        this.dataCanvas.clear();
-        if (redrawLines) {
-            this.drawLeadingLines();
-        }
-    };
-    SignatureCanvas.prototype.drawLine = function (start, end) {
-        this.viewCanvas.drawLine(start, end);
-        this.dataCanvas.drawLine(start, end);
-    };
-    SignatureCanvas.prototype.drawDot = function (point) {
-        this.viewCanvas.drawDot(point);
-        this.dataCanvas.drawDot(point);
-    };
-    SignatureCanvas.prototype.setFont = function (font) {
-        this.viewCanvas.setFont(font);
-        this.dataCanvas.setFont(font);
-    };
-    SignatureCanvas.prototype.hasData = function () {
-        return this.dataCanvas.hasData();
-    };
-    SignatureCanvas.prototype.save = function () {
-        return this.dataCanvas.save();
-    };
-    SignatureCanvas.prototype.saveCropped = function (rect, type, encoderOptions) {
-        if (type === void 0) { type = "image/png"; }
-        return this.dataCanvas.saveCropped(rect, type, encoderOptions);
-    };
-    return SignatureCanvas;
+    return Rect;
 }());
 
 /// <reference path="./point.ts"/>
 /// <reference path="./signatureCanvas.ts"/>
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -459,11 +357,119 @@ var SignPad = /** @class */ (function (_super) {
     return SignPad;
 }(SignatureCanvas));
 
+/// <reference path="./point.ts"/>
+/// <reference path="./canvas2d.ts"/>
+var ISignatureCanvasOptions = /** @class */ (function () {
+    function ISignatureCanvasOptions() {
+    }
+    return ISignatureCanvasOptions;
+}());
+var SignatureCanvas = /** @class */ (function () {
+    function SignatureCanvas(canvas, baseOptions) {
+        if (baseOptions === void 0) { baseOptions = {}; }
+        this.baseOptions = baseOptions;
+        this.leadingLines = [];
+        this.baseCanvasElement = canvas;
+        if (baseOptions.leadingLines) {
+            this.leadingLines = baseOptions.leadingLines;
+        }
+        this.init();
+    }
+    SignatureCanvas.prototype.init = function () {
+        this.viewCanvas = new Canvas2D(this.baseCanvasElement);
+        this.dataCanvas = this.viewCanvas.copy();
+        this.addLeadingLine({
+            start: { x: 0, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4) },
+            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4) },
+            stroke: {
+                lineWidth: 1.5,
+                lineDash: [],
+                strokeStyle: '#3498db',
+                shadowBlur: 0,
+                shadowColor: '#3498db'
+            }
+        });
+        this.addLeadingLine({
+            start: { x: 0, y: this.baseCanvasElement.height / 2 },
+            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 2 },
+            stroke: {
+                lineWidth: 1.5,
+                lineDash: [5, 4],
+                strokeStyle: '#e8e8e8',
+                shadowBlur: 0,
+                shadowColor: '#e8e8e8'
+            }
+        });
+        this.addLeadingLine({
+            start: { x: 0, y: this.baseCanvasElement.height / 4 },
+            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 4 },
+            stroke: {
+                lineWidth: 1.5,
+                lineDash: [2, 1],
+                strokeStyle: '#e8e8e8',
+                shadowBlur: 0,
+                shadowColor: '#e8e8e8'
+            }
+        });
+        this.drawLeadingLines();
+        if (this.baseOptions.stroke) {
+            this.viewCanvas.setStroke(this.baseOptions.stroke);
+            this.dataCanvas.setStroke(this.baseOptions.stroke);
+        }
+    };
+    SignatureCanvas.prototype.addLeadingLine = function (leadingLine) {
+        this.leadingLines.push(leadingLine);
+    };
+    SignatureCanvas.prototype.drawLeadingLines = function () {
+        var prevStroke = this.viewCanvas.getStroke();
+        for (var _i = 0, _a = this.leadingLines; _i < _a.length; _i++) {
+            var line = _a[_i];
+            this.viewCanvas.setStroke(line.stroke);
+            this.viewCanvas.drawLine(line.start, line.end);
+        }
+        this.viewCanvas.setStroke(prevStroke);
+    };
+    SignatureCanvas.prototype.clear = function (redrawLines) {
+        if (redrawLines === void 0) { redrawLines = true; }
+        this.viewCanvas.clear();
+        this.dataCanvas.clear();
+        if (redrawLines) {
+            this.drawLeadingLines();
+        }
+    };
+    SignatureCanvas.prototype.drawLine = function (start, end) {
+        this.viewCanvas.drawLine(start, end);
+        this.dataCanvas.drawLine(start, end);
+    };
+    SignatureCanvas.prototype.drawDot = function (point) {
+        this.viewCanvas.drawDot(point);
+        this.dataCanvas.drawDot(point);
+    };
+    SignatureCanvas.prototype.setFont = function (font) {
+        this.viewCanvas.setFont(font);
+        this.dataCanvas.setFont(font);
+    };
+    SignatureCanvas.prototype.hasData = function () {
+        return this.dataCanvas.hasData();
+    };
+    SignatureCanvas.prototype.save = function () {
+        return this.dataCanvas.save();
+    };
+    SignatureCanvas.prototype.saveCropped = function (rect, type, encoderOptions) {
+        if (type === void 0) { type = "image/png"; }
+        return this.dataCanvas.saveCropped(rect, type, encoderOptions);
+    };
+    return SignatureCanvas;
+}());
+
 /// <reference path="./signatureCanvas.ts"/>
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
