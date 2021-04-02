@@ -18,18 +18,18 @@ class Point implements IPoint {
         this.time = time || Date.now();
     }
 
-    distanceTo(start: IPoint): number {
+    public distanceTo(start: IPoint): number {
         return Math.sqrt(Math.pow(this.x - start.x, 2)) + Math.pow(this.y - start.y, 2);
     }
 
-    velocityFrom(start: IPoint): number {
+    public velocityFrom(start: IPoint): number {
         if (this.time === start.time) {
             return 0;
         }
         return this.distanceTo(start) / (this.time - start.time);
     }
 
-    equalTo(other: IPoint): boolean {
+    public equalTo(other: IPoint): boolean {
         return this.x === other.x && this.y === other.y && this.time === other.time;
     }
 }

@@ -20,7 +20,7 @@ class TextSignature extends SignatureCanvas {
         this.loadFont(this.options.fontFamily);
     }
 
-    drawText(text: string, dataOnly?: boolean, font?: string) {
+    public drawText(text: string, dataOnly?: boolean, font?: string) {
         let fnt = font || this.getFont();
         this.viewCanvas.setFont(fnt);
         this.dataCanvas.setFont(fnt);

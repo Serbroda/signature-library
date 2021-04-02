@@ -107,7 +107,7 @@ class SignPad extends SignatureCanvas {
         return super.saveCropped(Rect.createFromPointArray(this.data), type, encoderOptions);
     }
 
-    save2(type: string = 'image/png', encoderOptions?: number) {
+    public save2(type: string = 'image/png', encoderOptions?: number) {
         let tmpCanvas = document.createElement('canvas');
         let tmpCtx = tmpCanvas.getContext('2d');
         let data = super.save();
