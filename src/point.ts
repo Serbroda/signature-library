@@ -23,7 +23,7 @@ class Point implements IPoint {
     }
 
     velocityFrom(start: IPoint): number {
-        if(this.time === start.time) {
+        if (this.time === start.time) {
             return 0;
         }
         return this.distanceTo(start) / (this.time - start.time);
@@ -44,22 +44,24 @@ class Rect implements IRect {
     }
 
     static createFromPointArray(points: IPoint[]): IRect {
-        let sx = 99999, sy = 99999;
-        let bx = -1, by = -1;
-        for(let point of points) {
-            if(sx >= point.x) {
+        let sx = 99999,
+            sy = 99999;
+        let bx = -1,
+            by = -1;
+        for (let point of points) {
+            if (sx >= point.x) {
                 sx = point.x;
             }
-            if(sy >= point.y) {
+            if (sy >= point.y) {
                 sy = point.y;
             }
-            if(bx <= point.x) {
+            if (bx <= point.x) {
                 bx = point.x;
             }
-            if(by <= point.y) {
+            if (by <= point.y) {
                 by = point.y;
             }
         }
-        return new Rect({x: sx, y: sy}, {x: bx, y: by});
+        return new Rect({ x: sx, y: sy }, { x: bx, y: by });
     }
 }

@@ -1,0 +1,36 @@
+{
+  "parser": "typescript",
+  "trailingComma": "es5",
+  "printWidth": 120,
+  "tabWidth": 4,
+  "useTabs": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "semi": true,
+  "bracketSpacing": true,
+  "jsxBracketSameLine": true,
+  "arrowParens": "always",
+  "insertPragma": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": [
+        "*.css",
+        "*.scss"
+      ],
+      "options": {
+        "parser": "css"
+      }
+    },
+    {
+      "files": [
+        "packages/ui/**/*.html"
+      ],
+      "options": {
+        "parser": "angular",
+        "tabWidth": 2
+      }
+    }
+  ]
+}

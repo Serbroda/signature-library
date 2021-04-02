@@ -19,22 +19,25 @@ class Canvas2D {
 
     public context: CanvasRenderingContext2D;
 
-    constructor(public canvas: HTMLCanvasElement, context?: { context: CanvasRenderingContext2D, stroke?: IStroke, font?: string }) {
-        if(context) {
+    constructor(
+        public canvas: HTMLCanvasElement,
+        context?: { context: CanvasRenderingContext2D; stroke?: IStroke; font?: string }
+    ) {
+        if (context) {
             this.context = context.context;
         } else {
-            this.context = this.canvas.getContext("2d");
+            this.context = this.canvas.getContext('2d');
         }
-        if(context && context.stroke) {
+        if (context && context.stroke) {
             this.setStroke(context.stroke);
         }
-        if(context && context.font) {
+        if (context && context.font) {
             this.setFont(context.font);
         }
-        if(canvas.className.indexOf('signature-fullwidth') !== -1) {
+        if (canvas.className.indexOf('signature-fullwidth') !== -1) {
             canvas.width = canvas.parentElement.clientWidth;
         }
-        if(canvas.className.indexOf('signature-fullwidth-responsive') !== -1) {
+        if (canvas.className.indexOf('signature-fullwidth-responsive') !== -1) {
             let self = this;
             window.addEventListener('resize', () => {
                 let image = self.saveImageData();
@@ -56,7 +59,7 @@ class Canvas2D {
 
     public drawDot(point: IPoint) {
         this.context.beginPath();
-        this.context.fillStyle = "black";
+        this.context.fillStyle = 'black';
         this.context.fillRect(point.x, point.y, this.context.lineWidth, this.context.lineWidth);
         this.context.closePath();
         this._hasData = true;
@@ -70,7 +73,7 @@ class Canvas2D {
     }
 
     public drawImage(image: any, point?: IPoint) {
-        let pt: IPoint = point || {x: 0, y: 0};
+        let pt: IPoint = point || { x: 0, y: 0 };
         this.context.putImageData(image, pt.x, pt.y);
     }
 
@@ -82,14 +85,14 @@ class Canvas2D {
                 this.canvas.width = img.width;
                 this.canvas.height = img.height;
                 this.context.drawImage(img, 0, 0);
-            }
+            };
             img.src = e.target.result;
-        }
+        };
         reader.readAsDataURL(fileEvent.target.files[0]);
     }
 
     public clear() {
-        this.context.clearRect(0 ,0, this.canvas.width, this.canvas.height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this._hasData = false;
     }
 
@@ -98,7 +101,7 @@ class Canvas2D {
         this.context.strokeStyle = stroke.strokeStyle || this.context.strokeStyle;
         this.context.shadowColor = stroke.shadowColor || this.context.shadowColor;
         this.context.shadowBlur = stroke.shadowBlur || this.context.shadowBlur;
-        if(stroke.lineDash) {
+        if (stroke.lineDash) {
             this.context.setLineDash(stroke.lineDash);
         }
     }
@@ -110,7 +113,7 @@ class Canvas2D {
             strokeStyle: this.context.strokeStyle as string,
             shadowBlur: this.context.shadowBlur,
             shadowColor: this.context.shadowColor,
-        }
+        };
     }
 
     public getFont(): string {
@@ -130,8 +133,8 @@ class Canvas2D {
     }
 
     public save(options?: ICanvas2DSaveOptions): any {
-        let opt = options || {type: 'base64'};
-        switch(opt.type) {
+        let opt = options || { type: 'base64' };
+        switch (opt.type) {
             case 'imageData':
                 return this.saveImageData();
             case 'bytes':
@@ -141,16 +144,16 @@ class Canvas2D {
         }
     }
 
-    public saveBase64(type: string = "image/png", encoderOptions?: number) {
+    public saveBase64(type: string = 'image/png', encoderOptions?: number) {
         return this.canvas.toDataURL(type, encoderOptions);
     }
 
     public saveArrayBuffer() {
         let base64 = this.save();
-        let binary_string =  window.atob(base64);
+        let binary_string = window.atob(base64);
         let len = binary_string.length;
-        let bytes = new Uint8Array( len );
-        for (let i = 0; i < len; i++)        {
+        let bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
             bytes[i] = binary_string.charCodeAt(i);
         }
         return bytes.buffer;
@@ -160,33 +163,28 @@ class Canvas2D {
         return this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    public saveCropped(rect: IRect, type: string = "image/png", encoderOptions?: number) {
-        let img = this.context.getImageData(
-            rect.smallest.x, 
-            rect.smallest.y, 
-            rect.width, 
-            rect.height
-        );
+    public saveCropped(rect: IRect, type: string = 'image/png', encoderOptions?: number) {
+        let img = this.context.getImageData(rect.smallest.x, rect.smallest.y, rect.width, rect.height);
 
-        let tmpCanvas = document.createElement("canvas");
+        let tmpCanvas = document.createElement('canvas');
         tmpCanvas.width = img.width;
         tmpCanvas.height = img.height;
-        let tmpContext = tmpCanvas.getContext("2d");
+        let tmpContext = tmpCanvas.getContext('2d');
         tmpContext.putImageData(img, 0, 0);
         return tmpCanvas.toDataURL(type, encoderOptions);
     }
 
     static copyFrom(canvas: Canvas2D): Canvas2D {
-        let element = document.createElement("canvas");
+        let element = document.createElement('canvas');
         element.width = canvas.canvas.width;
         element.height = canvas.canvas.height;
-        let ctx = element.getContext("2d");
+        let ctx = element.getContext('2d');
         ctx.lineWidth = canvas.context.lineWidth;
         ctx.strokeStyle = canvas.context.strokeStyle;
         ctx.shadowColor = canvas.context.shadowColor;
         ctx.shadowBlur = canvas.context.shadowBlur;
         ctx.setLineDash(canvas.context.getLineDash());
         ctx.font = canvas.context.font;
-        return new Canvas2D(element, {context: ctx });
+        return new Canvas2D(element, { context: ctx });
     }
 }

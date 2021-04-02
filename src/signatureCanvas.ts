@@ -19,9 +19,9 @@ class SignatureCanvas {
 
     protected leadingLines: ILeadingLine[] = [];
 
-    constructor(canvas: HTMLCanvasElement, protected baseOptions: ISignatureCanvasOptions = { }) {
+    constructor(canvas: HTMLCanvasElement, protected baseOptions: ISignatureCanvasOptions = {}) {
         this.baseCanvasElement = canvas;
-        if(baseOptions.leadingLines) {
+        if (baseOptions.leadingLines) {
             this.leadingLines = baseOptions.leadingLines;
         }
         this.init();
@@ -32,40 +32,43 @@ class SignatureCanvas {
         this.dataCanvas = this.viewCanvas.copy();
 
         this.addLeadingLine({
-            start: {x: 0, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4)},
-            end: {x: this.baseCanvasElement.width, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4)},
+            start: { x: 0, y: this.baseCanvasElement.height - this.baseCanvasElement.height / 4 },
+            end: {
+                x: this.baseCanvasElement.width,
+                y: this.baseCanvasElement.height - this.baseCanvasElement.height / 4,
+            },
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [],
                 strokeStyle: '#3498db',
                 shadowBlur: 0,
-                shadowColor: '#3498db'
-            }
+                shadowColor: '#3498db',
+            },
         });
         this.addLeadingLine({
-            start: {x: 0, y: this.baseCanvasElement.height / 2},
-            end: {x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 2},
+            start: { x: 0, y: this.baseCanvasElement.height / 2 },
+            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 2 },
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [5, 4],
                 strokeStyle: '#e8e8e8',
                 shadowBlur: 0,
-                shadowColor: '#e8e8e8'
-            }
+                shadowColor: '#e8e8e8',
+            },
         });
         this.addLeadingLine({
-            start: {x: 0, y: this.baseCanvasElement.height / 4},
-            end: {x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 4},
+            start: { x: 0, y: this.baseCanvasElement.height / 4 },
+            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height / 4 },
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [2, 1],
                 strokeStyle: '#e8e8e8',
                 shadowBlur: 0,
-                shadowColor: '#e8e8e8'
-            }
+                shadowColor: '#e8e8e8',
+            },
         });
         this.drawLeadingLines();
-         if(this.baseOptions.stroke) {
+        if (this.baseOptions.stroke) {
             this.viewCanvas.setStroke(this.baseOptions.stroke);
             this.dataCanvas.setStroke(this.baseOptions.stroke);
         }
@@ -77,7 +80,7 @@ class SignatureCanvas {
 
     protected drawLeadingLines() {
         let prevStroke = this.viewCanvas.getStroke();
-        for(let line of this.leadingLines) {
+        for (let line of this.leadingLines) {
             this.viewCanvas.setStroke(line.stroke);
             this.viewCanvas.drawLine(line.start, line.end);
         }
@@ -87,7 +90,7 @@ class SignatureCanvas {
     public clear(redrawLines: boolean = true) {
         this.viewCanvas.clear();
         this.dataCanvas.clear();
-        if(redrawLines) {
+        if (redrawLines) {
             this.drawLeadingLines();
         }
     }
@@ -115,7 +118,7 @@ class SignatureCanvas {
         return this.dataCanvas.save();
     }
 
-    public saveCropped(rect: IRect, type: string = "image/png", encoderOptions?: number) {
+    public saveCropped(rect: IRect, type: string = 'image/png', encoderOptions?: number) {
         return this.dataCanvas.saveCropped(rect, type, encoderOptions);
     }
 }
