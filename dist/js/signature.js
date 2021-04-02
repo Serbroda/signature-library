@@ -2,10 +2,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -69,7 +71,7 @@ var Canvas2D = /** @class */ (function () {
             this.context = context.context;
         }
         else {
-            this.context = this.canvas.getContext("2d");
+            this.context = this.canvas.getContext('2d');
         }
         if (context && context.stroke) {
             this.setStroke(context.stroke);
@@ -100,7 +102,7 @@ var Canvas2D = /** @class */ (function () {
     };
     Canvas2D.prototype.drawDot = function (point) {
         this.context.beginPath();
-        this.context.fillStyle = "black";
+        this.context.fillStyle = 'black';
         this.context.fillRect(point.x, point.y, this.context.lineWidth, this.context.lineWidth);
         this.context.closePath();
         this._hasData = true;
@@ -175,7 +177,7 @@ var Canvas2D = /** @class */ (function () {
         }
     };
     Canvas2D.prototype.saveBase64 = function (type, encoderOptions) {
-        if (type === void 0) { type = "image/png"; }
+        if (type === void 0) { type = 'image/png'; }
         return this.canvas.toDataURL(type, encoderOptions);
     };
     Canvas2D.prototype.saveArrayBuffer = function () {
@@ -192,20 +194,20 @@ var Canvas2D = /** @class */ (function () {
         return this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
     };
     Canvas2D.prototype.saveCropped = function (rect, type, encoderOptions) {
-        if (type === void 0) { type = "image/png"; }
+        if (type === void 0) { type = 'image/png'; }
         var img = this.context.getImageData(rect.smallest.x, rect.smallest.y, rect.width, rect.height);
-        var tmpCanvas = document.createElement("canvas");
+        var tmpCanvas = document.createElement('canvas');
         tmpCanvas.width = img.width;
         tmpCanvas.height = img.height;
-        var tmpContext = tmpCanvas.getContext("2d");
+        var tmpContext = tmpCanvas.getContext('2d');
         tmpContext.putImageData(img, 0, 0);
         return tmpCanvas.toDataURL(type, encoderOptions);
     };
     Canvas2D.copyFrom = function (canvas) {
-        var element = document.createElement("canvas");
+        var element = document.createElement('canvas');
         element.width = canvas.canvas.width;
         element.height = canvas.canvas.height;
-        var ctx = element.getContext("2d");
+        var ctx = element.getContext('2d');
         ctx.lineWidth = canvas.context.lineWidth;
         ctx.strokeStyle = canvas.context.strokeStyle;
         ctx.shadowColor = canvas.context.shadowColor;
@@ -238,8 +240,11 @@ var SignatureCanvas = /** @class */ (function () {
         this.viewCanvas = new Canvas2D(this.baseCanvasElement);
         this.dataCanvas = this.viewCanvas.copy();
         this.addLeadingLine({
-            start: { x: 0, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4) },
-            end: { x: this.baseCanvasElement.width, y: this.baseCanvasElement.height - (this.baseCanvasElement.height / 4) },
+            start: { x: 0, y: this.baseCanvasElement.height - this.baseCanvasElement.height / 4 },
+            end: {
+                x: this.baseCanvasElement.width,
+                y: this.baseCanvasElement.height - this.baseCanvasElement.height / 4
+            },
             stroke: {
                 lineWidth: 1.5,
                 lineDash: [],
@@ -315,7 +320,7 @@ var SignatureCanvas = /** @class */ (function () {
         return this.dataCanvas.save();
     };
     SignatureCanvas.prototype.saveCropped = function (rect, type, encoderOptions) {
-        if (type === void 0) { type = "image/png"; }
+        if (type === void 0) { type = 'image/png'; }
         return this.dataCanvas.saveCropped(rect, type, encoderOptions);
     };
     return SignatureCanvas;
@@ -352,13 +357,13 @@ var SignPad = /** @class */ (function (_super) {
     }
     SignPad.prototype.mouseEvents = function () {
         var self = this;
-        this.viewCanvas.canvas.addEventListener("mousemove", function (event) {
+        this.viewCanvas.canvas.addEventListener('mousemove', function (event) {
             self.handleMouseEvent(MouseAction.MOVE, event);
         }, false);
-        this.viewCanvas.canvas.addEventListener("mousedown", function (event) {
+        this.viewCanvas.canvas.addEventListener('mousedown', function (event) {
             self.handleMouseEvent(MouseAction.DOWN, event);
         }, false);
-        this.options.docReference.addEventListener("mouseup", function (event) {
+        this.options.docReference.addEventListener('mouseup', function (event) {
             self.handleMouseEvent(MouseAction.UP, event);
         }, false);
     };
@@ -407,13 +412,13 @@ var SignPad = /** @class */ (function (_super) {
         return new Point(event.clientX - rect.left, event.clientY - rect.top);
     };
     SignPad.prototype.save = function (type, encoderOptions) {
-        if (type === void 0) { type = "image/png"; }
+        if (type === void 0) { type = 'image/png'; }
         return _super.prototype.saveCropped.call(this, Rect.createFromPointArray(this.data), type, encoderOptions);
     };
     SignPad.prototype.save2 = function (type, encoderOptions) {
-        if (type === void 0) { type = "image/png"; }
-        var tmpCanvas = document.createElement("canvas");
-        var tmpCtx = tmpCanvas.getContext("2d");
+        if (type === void 0) { type = 'image/png'; }
+        var tmpCanvas = document.createElement('canvas');
+        var tmpCtx = tmpCanvas.getContext('2d');
         var data = _super.prototype.save.call(this);
         var img = new Image();
         img.onload = function () {
@@ -422,10 +427,10 @@ var SignPad = /** @class */ (function (_super) {
         img.src = data;
         var range = this.getRectRange();
         var imageData = tmpCtx.getImageData(range.smallest.x, range.smallest.y, range.biggest.x, range.biggest.y);
-        var canvas1 = document.createElement("canvas");
+        var canvas1 = document.createElement('canvas');
         canvas1.width = range.biggest.x - range.smallest.x;
         canvas1.height = range.biggest.y - range.smallest.y;
-        var ctx1 = canvas1.getContext("2d");
+        var ctx1 = canvas1.getContext('2d');
         ctx1.rect(0, 0, range.biggest.x - range.smallest.x, range.biggest.y - range.smallest.y);
         ctx1.fillStyle = 'white';
         ctx1.fill();
@@ -465,8 +470,8 @@ var TextSignature = /** @class */ (function (_super) {
     __extends(TextSignature, _super);
     function TextSignature(canvas, options) {
         if (options === void 0) { options = {
-            fontSize: "70px",
-            fontFamily: "Signature",
+            fontSize: '70px',
+            fontFamily: 'Signature',
             docReference: document
         }; }
         var _this = _super.call(this, canvas) || this;
@@ -481,7 +486,10 @@ var TextSignature = /** @class */ (function (_super) {
         this.dataCanvas.setFont(fnt);
         this.clear();
         if (typeof dataOnly == 'undefined' || !dataOnly) {
-            this.viewCanvas.drawText(text, { x: 10, y: this.viewCanvas.canvas.height - (this.viewCanvas.canvas.height / 4) - 5 });
+            this.viewCanvas.drawText(text, {
+                x: 10,
+                y: this.viewCanvas.canvas.height - this.viewCanvas.canvas.height / 4 - 5
+            });
         }
         var textWidth = this.dataCanvas.context.measureText(text).width;
         if (textWidth > this.viewCanvas.canvas.width) {
@@ -496,26 +504,29 @@ var TextSignature = /** @class */ (function (_super) {
                 this.dataCanvas.setFont(fnt);
             }
         }
-        this.dataCanvas.drawText(text, { x: 10, y: this.dataCanvas.canvas.height - (this.dataCanvas.canvas.height / 4) - 5 });
+        this.dataCanvas.drawText(text, {
+            x: 10,
+            y: this.dataCanvas.canvas.height - this.dataCanvas.canvas.height / 4 - 5
+        });
     };
     TextSignature.prototype.getFont = function () {
-        return this.options.fontSize + " " + this.options.fontFamily;
+        return this.options.fontSize + ' ' + this.options.fontFamily;
     };
     TextSignature.prototype.setFont = function (font) {
         _super.prototype.setFont.call(this, font);
     };
     TextSignature.prototype.loadFont = function (name) {
-        var paragraph = document.createElement("p");
-        paragraph.id = "__fontFamilyLoad" + name;
+        var paragraph = document.createElement('p');
+        paragraph.id = '__fontFamilyLoad' + name;
         paragraph.style.fontFamily = name;
-        paragraph.innerText = "test";
-        var bod = document.getElementsByTagName("body")[0].appendChild(paragraph);
+        paragraph.innerText = 'test';
+        var bod = document.getElementsByTagName('body')[0].appendChild(paragraph);
         setTimeout(function () {
             if (typeof paragraph.remove !== 'undefined') {
                 paragraph.remove();
             }
             else {
-                paragraph.style.display = "none";
+                paragraph.style.display = 'none';
             }
         }, 1);
     };
